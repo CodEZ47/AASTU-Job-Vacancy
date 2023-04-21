@@ -159,7 +159,7 @@ body{
 
 
 /* Containt */
-.containt {
+.content {
     position: relative;
     width: calc(100% - var(--sidebarWidth));
     left: var(--sidebarWidth);
