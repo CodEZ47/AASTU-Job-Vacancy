@@ -82,3 +82,10 @@ router.delete('/:id', async (req, res) => {
 }
 )
 export default router
+/**
+ * vacant position
+ * requirement
+ * application
+ * academic_rank
+ * academic_rank_requirement
+ */
