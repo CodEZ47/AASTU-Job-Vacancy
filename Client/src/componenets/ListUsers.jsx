@@ -8,6 +8,7 @@ import {
 } from "react-bootstrap";
 
 import EditModal from "../componenets/EditUser";
+
 const ListUsers = ({ users, dataTypeInfo }) => {
   const [editingUser, setEditingUser] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);

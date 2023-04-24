@@ -2,7 +2,7 @@ import React from "react";
 import List from "../../componenets/List";
 
 const users = [
-  { id: 1, name: "", email: "john@example.com" },
+  { id: 1, name: "Test Testerson", email: "john@example.com" },
   { id: 2, name: "Jane Doe", email: "jane@example.com" },
   { id: 3, name: "Bob Johnson", email: "bob@example.com" },
 ];
