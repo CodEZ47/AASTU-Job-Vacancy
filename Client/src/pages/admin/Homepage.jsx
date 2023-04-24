@@ -10,7 +10,10 @@ import { Metric } from "./Metric";
 import { Roles } from "./Roles";
 import { Vacancies } from "../users/Vacancies";
 
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes } from 'react-router-dom';
+import SignIn from '../../componenets/signIn';
+import ApplicantSignUp from '../../componenets/signUp';
+
 
 export const Homepage = () => {
   return (
@@ -20,6 +23,8 @@ export const Homepage = () => {
       <div className="content">
         <SearchBar />
         <Routes>
+          <Route path='/signin' element={<SignIn/>} />
+          <Route path='/signup' element={<ApplicantSignUp />} />
           <Route path="/Users" element={<Users />} />
           <Route path="/Position" element={<Positions />} />
           <Route path="/Offices" element={<Offices />} />
