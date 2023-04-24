@@ -8,7 +8,7 @@ import { Users } from "./Users";
 import { Offices } from "./Offices";
 import { Metric } from "./Metric";
 import { Roles } from "./Roles";
-import { Vacancies } from "../users/Vacancies";
+import { OpenVacancies } from "../users/OpenVacancies";
 
 import { Route, Routes } from 'react-router-dom';
 import SignIn from '../../componenets/signIn';
@@ -30,7 +30,7 @@ export const Homepage = () => {
           <Route path="/Offices" element={<Offices />} />
           <Route path="/Metric" element={<Metric />} />
           <Route path="/Roles" element={<Roles />} />
-          <Route path="/Vacancies" element={<Vacancies />} />
+          <Route path="/OpenVacancies" element={<OpenVacancies />} />
         </Routes>
       </div>
     </div>

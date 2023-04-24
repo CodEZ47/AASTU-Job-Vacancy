@@ -11,7 +11,7 @@ export const SideBar = () => {
           <Links link="/Offices">Offices</Links>
           <Links link="/Metric">Metric</Links>
           <Links link="/Roles">Roles</Links>
-          <Links link="../pages/users/Vacancies.jsx">Vacancies</Links>
+          <Links link="/OpenVacancies">Open Vacancies</Links>
         </ul>
       </div>
     </div>

@@ -11,7 +11,7 @@ const EditUser = ({ user, onSave, onCancel }) => {
   };
 
   return (
-    <Modal show={true} onHide={onCancel}>
+    <Modal show={true} onHide={onCancel} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>Edit User Info</Modal.Title>
       </Modal.Header>
