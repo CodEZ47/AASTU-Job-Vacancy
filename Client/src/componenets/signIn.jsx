@@ -1,4 +1,4 @@
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Card } from 'react-bootstrap';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { BASE_URL } from '../constant';
@@ -45,6 +45,10 @@ const LoginForm = () => {
       }
   };
   return (
+    <Card className='p-5'>
+    <Card.Body>
+    <h1>AASTU JOB VACANCY</h1>
+    <h2>Login</h2>
     <Formik initialValues={{ email: '', password: '' }} validationSchema={validationSchema} onSubmit={handleSubmit}>
       {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status }) => (
         <Form noValidate onSubmit={handleSubmit}>
@@ -73,12 +77,14 @@ const LoginForm = () => {
             />
             <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
           </Form.Group>
-          <Button type="submit" disabled={isSubmitting}>
+          <Button type="submit" className="mt-3" disabled={isSubmitting}>
             {isSubmitting ? 'Loading...' : 'Sign in'}
           </Button>
         </Form>
       )}
     </Formik>
+    </Card.Body>
+  </Card>
   );
 };
 

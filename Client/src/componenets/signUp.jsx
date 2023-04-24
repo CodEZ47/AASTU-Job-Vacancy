@@ -5,6 +5,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { DEPARTMENTS } from "../constant";
+import {Card} from 'react-bootstrap'
 export default function ApplicantSignUp() {
   const validationSchema = Yup.object().shape({
     email: Yup.string().email('Invalid email address').matches(/@aastu\.edu\.et$/, 'Invalid aastu email').required('Email is required'),
@@ -54,6 +55,10 @@ const handleSubmit = (values, { setSubmitting, setStatus }) => {
         }
     };
   return (
+    <Card className='p-5'>
+    <Card.Body>
+    <h1>AASTU JOB VACANCY</h1>
+    <h2>Registration</h2>
     <Formik initialValues={{ email: '', password: '', name: '', phone_number:'', university_id: '', department: '' }} validationSchema={validationSchema} onSubmit={handleSubmit}>
     {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status }) => (
       <Form noValidate onSubmit={handleSubmit}>
@@ -131,11 +136,13 @@ const handleSubmit = (values, { setSubmitting, setStatus }) => {
             </Form.Control>
             <Form.Control.Feedback type="invalid">{errors.department}</Form.Control.Feedback>
         </Form.Group>
-        <Button type="submit" disabled={isSubmitting}>
+        <Button type="submit" className='mt-3' disabled={isSubmitting}>
           {isSubmitting ? 'Loading...' : 'Sign in'}
         </Button>
       </Form>
     )}
   </Formik>
+  </Card.Body>
+  </Card>
   );
 }
