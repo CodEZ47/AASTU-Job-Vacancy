@@ -1,4 +1,4 @@
-// import React, {useState} from "react";
+// import React, { useState } from "react";
 import { BASE_URL } from "../constant";
 import { Form, Button } from "react-bootstrap";
 import { Formik } from "formik";
@@ -59,6 +59,7 @@ export default function ApplicantSignUp() {
       setStatus(err.message);
       console.error(err.message);
     } finally {
+      console.log(""); //for getting rid of empty block statement error in esLint
     }
   };
   return (
