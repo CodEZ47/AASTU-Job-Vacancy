@@ -1,9 +1,9 @@
-import React from 'react'
+import React from "react";
 
 export const Roles = () => {
   return (
-    <h2>
-      Roles
-    </h2>
-  )
-}
+    <>
+      <h2>Roles</h2>
+    </>
+  );
+};

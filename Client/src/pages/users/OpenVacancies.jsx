@@ -31,7 +31,7 @@ const displayedData = [["title", "description", "requirements"], 4]; //data to b
 export const OpenVacancies = () => {
   return (
     <>
-      <h1>All Vacancies</h1>
+      <h1>Vacancies</h1>
       <List elems={open_vacancies} dataHeads={displayedData} />
     </>
   );

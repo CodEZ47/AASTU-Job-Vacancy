@@ -1,6 +1,5 @@
-import { React, useState } from "react";
-import { ListGroup, ListGroupItem, Button } from "react-bootstrap";
-
+import React, { useState } from "react";
+import { ListGroup, Button } from "react-bootstrap";
 import { ApplicationForm } from "./ApplicationForm";
 
 const ListVacancies = ({ vacancies, dataTypeInfo }) => {
@@ -11,19 +10,19 @@ const ListVacancies = ({ vacancies, dataTypeInfo }) => {
   const handleApplyNowClick = (vacancy) => {
     setShowApplicationForm(true);
     setShowOpenVacancies(false);
-    this;
     setSelectedVacancy(vacancy);
   };
   const handleCloseApplication = () => {
     setShowApplicationForm(false);
     setShowOpenVacancies(true);
   };
+
   return (
     <>
       {showOpenVacancies && (
         <ListGroup>
           {vacancies.map((vacancy) => (
-            <ListGroupItem key={vacancy.id}>
+            <ListGroup.Item key={vacancy.id} className="my-3 p-3 shadow">
               {vacancy[dataTypeInfo[0]] && <h3>{vacancy[dataTypeInfo[0]]}</h3>}
               {vacancy[dataTypeInfo[1]] && <p>{vacancy[dataTypeInfo[1]]}</p>}
               {vacancy[dataTypeInfo[2]] && (
@@ -37,20 +36,25 @@ const ListVacancies = ({ vacancies, dataTypeInfo }) => {
               >
                 Apply Now
               </Button>
-            </ListGroupItem>
+            </ListGroup.Item>
           ))}
         </ListGroup>
       )}
       {showApplicationForm && (
         <>
+          <br />
+          <Button
+            variant="primary"
+            onClick={() => handleCloseApplication()}
+            className="float-end"
+          >
+            Go back
+          </Button>
           <ApplicationForm
             vacancy={selectedVacancy}
             dataTypeInfo={dataTypeInfo}
             onClose={() => setShowApplicationForm(false)}
           />
-          <Button variant="primary" onClick={() => handleCloseApplication()}>
-            Go back
-          </Button>
         </>
       )}
     </>
