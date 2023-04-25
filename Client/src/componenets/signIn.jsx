@@ -3,9 +3,18 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { BASE_URL } from '../constant';
 import { useNavigate } from 'react-router-dom';
+
 const validationSchema = Yup.object().shape({
-  email: Yup.string().email('Invalid email address').matches(/@aastu\.edu\.et$/, 'Your email must be your university email address').required('Email is required'),
-  password: Yup.string().required('Password is required').min(6, 'Password must be at least 6 characters'),
+  email: Yup.string()
+    .email("Invalid email address")
+    .matches(
+      /@aastu\.edu\.et$/,
+      "Your email must be your university email address"
+    )
+    .required("Email is required"),
+  password: Yup.string()
+    .required("Password is required")
+    .min(6, "Password must be at least 6 characters"),
 });
 
 const LoginForm = () => {
@@ -16,41 +25,43 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const onSubmit = async (values, setStatus) => {
     const { email, password } = values;
-      const user = {
-        email,
-        password,
-      };
-      try {
-        const auth = await fetch(`${BASE_URL}/auth/login`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(user),
-        });
-        const response = await auth.json();
-        console.log(response);
+    const user = {
+      email,
+      password,
+    };
+    try {
+      const auth = await fetch(`${BASE_URL}/auth/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+      const response = await auth.json();
+      console.log(response);
 
-        if (response.token) {
-          localStorage.setItem("token", response.token);
-          navigate('/dashboard');
-        } else {
-          setStatus("Invalid email or password")
-        }
-      } catch (err) {
-        setStatus(err.message);
-        console.error(err.message);      
-      } finally {
-        
+      if (response.token) {
+        localStorage.setItem("token", response.token);
+        navigate("/dashboard");
+      } else {
+        setStatus("Invalid email or password");
       }
+    } catch (err) {
+      setStatus(err.message);
+      console.error(err.message);
+    } finally {
+      console.log(""); //for getting rid of empty block statement error in esLint
+    }
   };
   return (
+  
     <Card className='p-5'>
     <Card.Body>
     <h1>AASTU JOB VACANCY</h1>
     <h2>Login</h2>
     <Formik initialValues={{ email: '', password: '' }} validationSchema={validationSchema} onSubmit={handleSubmit}>
       {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status }) => (
+    
         <Form noValidate onSubmit={handleSubmit}>
           {status && <div className="alert alert-danger">{status}</div>}
           <Form.Group controlId="email">
@@ -63,7 +74,9 @@ const LoginForm = () => {
               onBlur={handleBlur}
               isInvalid={touched.email && !!errors.email}
             />
-            <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {errors.email}
+            </Form.Control.Feedback>
           </Form.Group>
           <Form.Group controlId="password">
             <Form.Label>Password</Form.Label>
@@ -75,10 +88,14 @@ const LoginForm = () => {
               onBlur={handleBlur}
               isInvalid={touched.password && !!errors.password}
             />
-            <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {errors.password}
+            </Form.Control.Feedback>
           </Form.Group>
+   
           <Button type="submit" className="mt-3" disabled={isSubmitting}>
             {isSubmitting ? 'Loading...' : 'Sign in'}
+
           </Button>
         </Form>
       )}
