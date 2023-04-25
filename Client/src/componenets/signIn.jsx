@@ -1,8 +1,9 @@
-import { Form, Button } from "react-bootstrap";
-import { Formik } from "formik";
-import * as Yup from "yup";
-import { BASE_URL } from "../constant";
-import { useNavigate } from "react-router-dom";
+import { Form, Button, Card } from 'react-bootstrap';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import { BASE_URL } from '../constant';
+import { useNavigate } from 'react-router-dom';
+
 const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email address")
@@ -53,21 +54,14 @@ const LoginForm = () => {
     }
   };
   return (
-    <Formik
-      initialValues={{ email: "", password: "" }}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-    >
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        isSubmitting,
-        status,
-      }) => (
+  
+    <Card className='p-5'>
+    <Card.Body>
+    <h1>AASTU JOB VACANCY</h1>
+    <h2>Login</h2>
+    <Formik initialValues={{ email: '', password: '' }} validationSchema={validationSchema} onSubmit={handleSubmit}>
+      {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status }) => (
+    
         <Form noValidate onSubmit={handleSubmit}>
           {status && <div className="alert alert-danger">{status}</div>}
           <Form.Group controlId="email">
@@ -98,12 +92,16 @@ const LoginForm = () => {
               {errors.password}
             </Form.Control.Feedback>
           </Form.Group>
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Loading..." : "Sign in"}
+   
+          <Button type="submit" className="mt-3" disabled={isSubmitting}>
+            {isSubmitting ? 'Loading...' : 'Sign in'}
+
           </Button>
         </Form>
       )}
     </Formik>
+    </Card.Body>
+  </Card>
   );
 };
 

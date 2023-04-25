@@ -5,6 +5,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { DEPARTMENTS } from "../constant";
+import {Card} from 'react-bootstrap'
 export default function ApplicantSignUp() {
   const validationSchema = Yup.object().shape({
     email: Yup.string()
@@ -63,87 +64,65 @@ export default function ApplicantSignUp() {
     }
   };
   return (
-    <Formik
-      initialValues={{
-        email: "",
-        password: "",
-        name: "",
-        phone_number: "",
-        university_id: "",
-        department: "",
-      }}
-      validationSchema={validationSchema}
-      onSubmit={handleSubmit}
-    >
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        isSubmitting,
-        status,
-      }) => (
-        <Form noValidate onSubmit={handleSubmit}>
-          {status && <div className="alert alert-danger">{status}</div>}
-          <Form.Group controlId="name">
-            <Form.Label>name</Form.Label>
-            <Form.Control
-              type="text"
-              name="name"
-              value={values.name}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              isInvalid={touched.name && !!errors.name}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.name}
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group controlId="email">
-            <Form.Label>Email address</Form.Label>
-            <Form.Control
-              type="email"
-              name="email"
-              value={values.email}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              isInvalid={touched.email && !!errors.email}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.email}
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group controlId="university_id">
-            <Form.Label>University Id</Form.Label>
-            <Form.Control
-              type="text"
-              name="university_id"
-              value={values.university_id}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              isInvalid={touched.university_id && !!errors.university_id}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.university_id}
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group controlId="password">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
-              type="password"
-              name="password"
-              value={values.password}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              isInvalid={touched.password && !!errors.password}
-            />
-            <Form.Control.Feedback type="invalid">
-              {errors.password}
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Form.Group controlId="phone_number">
+
+    <Card className='p-5'>
+    <Card.Body>
+    <h1>AASTU JOB VACANCY</h1>
+    <h2>Registration</h2>
+    <Formik initialValues={{ email: '', password: '', name: '', phone_number:'', university_id: '', department: '' }} validationSchema={validationSchema} onSubmit={handleSubmit}>
+    {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status }) => (
+      <Form noValidate onSubmit={handleSubmit}>
+        {status && <div className="alert alert-danger">{status}</div>}
+        <Form.Group controlId="name">
+          <Form.Label>name</Form.Label>
+          <Form.Control
+            type="text"
+            name="name"
+            value={values.name}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            isInvalid={touched.name && !!errors.name}
+          />
+          <Form.Control.Feedback type="invalid">{errors.name}</Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group controlId="email">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control
+            type="email"
+            name="email"
+            value={values.email}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            isInvalid={touched.email && !!errors.email}
+          />
+          <Form.Control.Feedback type="invalid">{errors.email}</Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group controlId="university_id">
+          <Form.Label>University Id</Form.Label>
+          <Form.Control
+            type="text"
+            name="university_id"
+            value={values.university_id}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            isInvalid={touched.university_id && !!errors.university_id}
+          />
+          <Form.Control.Feedback type="invalid">{errors.university_id}</Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group controlId="password">
+          <Form.Label>Password</Form.Label>
+          <Form.Control
+            type="password"
+            name="password"
+            value={values.password}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            isInvalid={touched.password && !!errors.password}
+          />
+          <Form.Control.Feedback type="invalid">{errors.password}</Form.Control.Feedback>
+        </Form.Group>
+        <Form.Group controlId="phone_number">
+
             <Form.Label>Phone Number</Form.Label>
             <Form.Control
               type="text"
@@ -175,15 +154,17 @@ export default function ApplicantSignUp() {
                 </option>
               ))}
             </Form.Control>
-            <Form.Control.Feedback type="invalid">
-              {errors.department}
-            </Form.Control.Feedback>
-          </Form.Group>
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? "Loading..." : "Sign in"}
-          </Button>
-        </Form>
-      )}
-    </Formik>
+
+            <Form.Control.Feedback type="invalid">{errors.department}</Form.Control.Feedback>
+        </Form.Group>
+        <Button type="submit" className='mt-3' disabled={isSubmitting}>
+          {isSubmitting ? 'Loading...' : 'Sign in'}
+        </Button>
+      </Form>
+    )}
+  </Formik>
+  </Card.Body>
+  </Card>
+
   );
 }
