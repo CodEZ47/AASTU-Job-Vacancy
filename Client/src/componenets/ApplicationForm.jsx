@@ -1,179 +1,242 @@
-import { useState } from "react";
-import { Form, Button } from "react-bootstrap";
+import { Form, Formik } from "formik";
+import { Button, Col, Row } from "react-bootstrap";
 
-import * as handlers from "../functions/formHandlers"; //handler functions for all the submit fields
-// import { metrics } from "../functions/metrics"; //static metrics for the requirements that show up in the dropdowns below some of the input fields like academic rank etc
-import CustomFormInput from "./CustomFormInput";
+import { applicationFormSchema } from "../schemas/appformsch";
+import CustomInput from "./custom_inputs/CustomInput";
+import CustomSelect from "./custom_inputs/CustomSelect";
+import CustomConditionalInput from "./custom_inputs/CustomConditionalInput";
 
-export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [resume, setResume] = useState(null);
-  const [academicRank, setAcademicRank] = useState("");
-  const [academicRankDocument, setAcademicRankDocument] = useState(null);
-  const [workExperience, setWorkExperience] = useState("");
-  const [workExperienceDocument, setWorkExperienceDocument] = useState(null);
-  const [teachingExperience, setTeachingExperience] = useState("");
-  const [teachingExperienceDocument, setTeachingExperienceDocument] =
-    useState(null);
-  const [researchExperience, setResearchExperience] = useState("");
-  const [researchExperienceDocument, setResearchExperienceDocument] =
-    useState(null);
-  const [KPI, setKPI] = useState("");
-  const [KPIDocument, setKPIDocument] = useState(null);
-  const [strategicPlan, setStrategicPlan] = useState(null);
+// import "../../styles/app.module.css";
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    alert("Application submitted:", {
-      name,
-      email,
-      resume,
-      academicRank,
-      academicRankDocument,
-      workExperience,
-      workExperienceDocument,
-      teachingExperience,
-      teachingExperienceDocument,
-      researchExperience,
-      researchExperienceDocument,
-      KPI,
-      KPIDocument,
-      strategicPlan,
-    });
-    // Reset form fields
-    setName("");
-    setEmail("");
-    setResume(null);
-    setAcademicRank("");
-    setAcademicRankDocument(null);
-    setWorkExperience("");
-    setWorkExperienceDocument(null);
-    setTeachingExperience("");
-    setTeachingExperienceDocument(null);
-    setResearchExperience("");
-    setResearchExperienceDocument(null);
-    setKPI("");
-    setKPIDocument(null);
-    setStrategicPlan(null);
-  };
-
-  return (
-    <Form onSubmit={handleSubmit}>
-      <h2>Apply for {vacancy[dataTypeInfo[0]]}</h2>
-      <p>{vacancy[dataTypeInfo[1]]}</p>
-      {/* Name Input */}
-      <CustomFormInput
-        label="Name"
-        type="text"
-        value={name}
-        onChange={handlers.handleTextFieldChange(setName)}
-        required
-      />
-
-      <CustomFormInput
-        label="Email"
-        type="email"
-        value={email}
-        onChange={handlers.handleTextFieldChange(setEmail)}
-        required
-      />
-
-      <CustomFormInput
-        label="Academic Rank"
-        type="dropdown"
-        value={academicRank}
-        onChange={handlers.handleTextFieldChange(setAcademicRank)}
-        options={[
-          "Lecturer",
-          "Assistant Professor",
-          "Associate Professor",
-          "Professor",
-        ]}
-        required
-      />
-
-      <CustomFormInput
-        label="Academic Rank Document"
-        type="file"
-        onChange={handlers.handleFileChange(setAcademicRankDocument)}
-        required
-      />
-
-      <CustomFormInput
-        label="Work Experience"
-        type="dropdown"
-        value={workExperience}
-        onChange={handlers.handleTextFieldChange(setWorkExperience)}
-        options={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
-        required
-      />
-
-      <CustomFormInput
-        label="Academic Rank Document"
-        type="file"
-        onChange={handlers.handleFileChange(setAcademicRankDocument)}
-        required
-      />
-      <CustomFormInput
-        label="Teaching Experience"
-        type="dropdown"
-        value={teachingExperience}
-        onChange={handlers.handleTextFieldChange(setTeachingExperience)}
-        options={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
-        required
-      />
-      <CustomFormInput
-        label="Teaching Experience Document"
-        type="file"
-        onChange={handlers.handleFileChange(setTeachingExperienceDocument)}
-        required
-      />
-      <CustomFormInput
-        type="research"
-        label="Research Experience"
-        onChange={handlers.handleTextFieldChange(setResearchExperience)}
-        value={researchExperience}
-        required
-      />
-      <CustomFormInput
-        label="Research Experience Document"
-        type="file"
-        onChange={handlers.handleFileChange(setResearchExperienceDocument)}
-        required
-      />
-      <CustomFormInput
-        type="number"
-        label="KPI"
-        onChange={handlers.handleTextFieldChange(setKPI)}
-        value={KPI}
-        required
-      />
-      <CustomFormInput
-        label="KPI Document"
-        type="file"
-        onChange={handlers.handleFileChange(setKPIDocument)}
-        required
-      />
-
-      <CustomFormInput
-        label="Strategic Plan"
-        type="file"
-        onChange={handlers.handleFileChange(setStrategicPlan)}
-        required
-      />
-      <p>
-        <b>Requirements:</b>
-        {vacancy[dataTypeInfo[2]]}
-      </p>
-      <br />
-
-      <br />
-      <Button variant="primary" type="submit" className="float-end">
-        Submit Application
-      </Button>
-    </Form>
-  );
+const onSubmit = async (values, actions) => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  actions.resetForm();
+  console.log("Form Submitted");
 };
 
-// export default ApplicationForm;
+export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
+  return (
+    <Formik
+      initialValues={{
+        name: "",
+        email: "",
+        academicRank: "",
+        workExperience: "",
+        teachingExperience: "",
+        researchExperience: "",
+        KPI: "",
+        academicRankDocument: undefined,
+        workExperienceDocument: undefined,
+        teachingExperienceDocument: undefined,
+
+        kpiDocument: undefined,
+        researchExperienceDocument: undefined,
+        no_projects: "",
+        no_publications: "",
+        strategicPlanDocument: undefined,
+      }}
+      validationSchema={applicationFormSchema}
+      onSubmit={onSubmit}
+    >
+      {({ isSubmitting }) => (
+        <>
+          <Form className="my-3 p-3 shadow">
+            <h2>Apply for {vacancy[dataTypeInfo[0]]}</h2>
+            <p>{vacancy[dataTypeInfo[1]]}</p>
+
+            <p>
+              <b>Requirements:</b>
+              {vacancy[dataTypeInfo[2]]}
+            </p>
+            <br />
+
+            <CustomInput
+              label="Full Name"
+              name="name"
+              type="text"
+              placeholder="Enter your Full Name"
+            />
+
+            <CustomInput
+              label="Email"
+              name="email"
+              type="text"
+              placeholder="Enter your email"
+            />
+
+            <br />
+            <br />
+            <br />
+
+            <Row>
+              <Col>
+                <CustomSelect
+                  label="Academic Rank"
+                  name="academicRank"
+                  placeholder="--Select Academic Rank--"
+                  options={[
+                    { value: "", label: "--Select Your Academic Rank--" },
+                    { value: "Lecturer", label: "Lecturer" },
+                    {
+                      value: "Assistant Professor",
+                      label: "Assistant Professor",
+                    },
+                    {
+                      value: "Associate Professor",
+                      label: "Associate Professor",
+                    },
+                    { value: "Professor", label: "Professor" },
+                  ]}
+                />
+              </Col>
+              <Col>
+                <CustomInput
+                  label="Academic Rank Document"
+                  name="academicRankDocument"
+                  type="file"
+                  accept=".pdf"
+                />
+              </Col>
+            </Row>
+
+            <br />
+
+            <Row>
+              <Col>
+                <CustomSelect
+                  label="Work Experience"
+                  name="workExperience"
+                  options={[
+                    { value: "", label: "--Select Work Experience--" },
+                    { value: 1, label: "1 year" },
+                    { value: 2, label: "2 years" },
+                    { value: 3, label: "3 years" },
+                    { value: 4, label: "4 years" },
+                    { value: 5, label: "5 years" },
+                    { value: 6, label: "6 years" },
+                    { value: 7, label: "7 years" },
+                    { value: 8, label: "8 years" },
+                    { value: 9, label: "9 years" },
+                    { value: 10, label: "10 or more years" },
+                  ]}
+                ></CustomSelect>
+              </Col>
+
+              <Col>
+                <CustomInput
+                  label="Work Experience Document"
+                  name="workExperienceDocument"
+                  type="file"
+                  accept=".pdf"
+                />
+              </Col>
+            </Row>
+
+            <br />
+
+            <Row>
+              <Col>
+                <CustomSelect
+                  label="Teaching Experience"
+                  name="teachingExperience"
+                  placeholder="--Select Teaching Experience--"
+                  options={[
+                    { value: "", label: "--Select Teaching Experience--" },
+                    { value: 1, label: "1 year" },
+                    { value: 2, label: "2 years" },
+                    { value: 3, label: "3 years" },
+                    { value: 4, label: "4 years" },
+                    { value: 5, label: "5 years" },
+                    { value: 6, label: "6 years" },
+                    { value: 7, label: "7 years" },
+                    { value: 8, label: "8 years" },
+                    { value: 9, label: "9 years" },
+                    { value: 10, label: "10 or more years" },
+                  ]}
+                />
+              </Col>
+              <Col>
+                <CustomInput
+                  label="Teaching Experience Document"
+                  name="teachingExperienceDocument"
+                  type="file"
+                  accept=".pdf"
+                />
+              </Col>
+            </Row>
+
+            <br />
+
+            <Row>
+              <Col>
+                <CustomConditionalInput
+                  label="Research Experience"
+                  name="researchExperience"
+                  options={[
+                    { value: "", label: "--Select Research Experience--" },
+                    { value: 1, label: "Projects " },
+                    { value: 2, label: "Publication" },
+                  ]}
+                ></CustomConditionalInput>
+              </Col>
+              <Col>
+                <CustomInput
+                  label="Research Experience Document"
+                  name="researchExperienceDocument"
+                  type="file"
+                  accept=".pdf"
+                />
+              </Col>
+            </Row>
+
+            <br />
+
+            <Row>
+              <Col>
+                <CustomInput
+                  label="KPI"
+                  name="KPI"
+                  type="number"
+                  min="0"
+                  max="100"
+                  placeholder="0-100"
+                />
+              </Col>
+              <Col>
+                <CustomInput
+                  label="KPI Document"
+                  name="kpiDocument"
+                  type="file"
+                  accept=".pdf"
+                />
+              </Col>
+            </Row>
+
+            <br />
+
+            <CustomInput
+              label="Strategic Plan Document"
+              name="strategicPlanDocument"
+              type="file"
+              accept=".pdf"
+            />
+
+            <br />
+            <br />
+
+            <Button
+              variant="primary"
+              disabled={isSubmitting}
+              type="submit"
+              className="float-end"
+            >
+              Submit
+            </Button>
+          </Form>
+          <br />
+          <br />
+        </>
+      )}
+    </Formik>
+  );
+};
