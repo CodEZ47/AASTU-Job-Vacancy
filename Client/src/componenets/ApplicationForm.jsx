@@ -1,21 +1,102 @@
-import { Form, Formik } from "formik";
-import { Button, Col, Row } from "react-bootstrap";
+import { Formik } from "formik";
+import { Button, Col, Row, Form } from "react-bootstrap";
 
 import { applicationFormSchema } from "../schemas/appformsch";
 import CustomInput from "./custom_inputs/CustomInput";
 import CustomSelect from "./custom_inputs/CustomSelect";
 import CustomConditionalInput from "./custom_inputs/CustomConditionalInput";
+import { handleUpload } from "../utils/upload";
+import { BASE_URL } from "../constant";
+import ProgressModal from "./ProgresModal";
 
 // import "../../styles/app.module.css";
 
-const onSubmit = async (values, actions) => {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-  actions.resetForm();
-  console.log("Form Submitted");
-};
-
 export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
+  const [show, setShow] = useState(false);
+  const [percent, setPercent] = useState(0);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState(false);
+  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const onSubmit = async (values, actions) => {
+    const {
+      workExperience,
+      academicRank,
+      teachingExperience,
+      researchExperience,
+      KPI,
+      no_projects,
+      no_publications,
+    } = values;
+    let d = {
+      workExperience: parseInt(workExperience),
+      academicRank,
+      teachingExperience: parseInt(teachingExperience),
+      researchExperience,
+      KPI,
+      no_projects,
+      no_publications,
+      vacancyId: vacancy.id,
+    };
+    const documents = [
+      {
+        name: "academicRankDocument",
+        file: values.academicRankDocument,
+      },
+      {
+        name: "workExperienceDocument",
+        file: values.workExperienceDocument,
+      },
+      {
+        name: "teachingExperienceDocument",
+        file: values.teachingExperienceDocument,
+      },
+      {
+        name: "kpiDocument",
+        file: values.kpiDocument,
+      },
+      {
+        name: "researchExperienceDocument",
+        file: values.researchExperienceDocument,
+      },
+      {
+        name: "strategicPlanDocument",
+        file: values.strategicPlanDocument,
+      },
+    ];
+    const res = await handleUpload(documents)
+    //returned promise allSettle
+    let docs = {}
+    let allSettled = res.map((r, i) => {
+      if (r.status === 'fulfilled') {
+        docs[documents[i].name] = r.value[documents[i].name]
+      } else {
+        console.log('error uploading file');
+      }
+    })
+    console.log(docs);
+    let data = {
+      data: d,
+      documents: docs
+    };
+    const application = await fetch(
+      `${BASE_URL}/vacancies/${vacancy.id}/applications`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify(data),
+      }
+    );
+   
+    console.log(res, 'after')
+    const response = await application.json();
+    console.log(response);
+  };
+  console.log(vacancy, dataTypeInfo);
   return (
+    <>
     <Formik
       initialValues={{
         name: "",
@@ -35,12 +116,20 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
         no_publications: "",
         strategicPlanDocument: undefined,
       }}
-      validationSchema={applicationFormSchema}
       onSubmit={onSubmit}
     >
-      {({ isSubmitting }) => (
+      {({
+        isSubmitting,
+        values,
+        errors,
+        touched,
+        handleChange,
+        handleBlur,
+        handleSubmit,
+        status,
+      }) => (
         <>
-          <Form className="my-3 p-3 shadow">
+          <Form noValidate onSubmit={handleSubmit} className="my-3 p-3 shadow">
             <h2>Apply for {vacancy[dataTypeInfo[0]]}</h2>
             <p>{vacancy[dataTypeInfo[1]]}</p>
 
@@ -90,12 +179,25 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
                 />
               </Col>
               <Col>
-                <CustomInput
-                  label="Academic Rank Document"
-                  name="academicRankDocument"
-                  type="file"
-                  accept=".pdf"
-                />
+                <Form.Group controlId={`academicRankDocument`}>
+                  <Form.Label>Academic Rank Document</Form.Label>
+                  <Form.Control
+                    type="file"
+                    name="academicRankDocument"
+                    onChange={(event) => {
+                      values.academicRankDocument =
+                        event.currentTarget.files[0];
+                      console.log(values.academicRankDocument);
+                    }}
+                    onBlur={handleBlur}
+                    isInvalid={
+                      touched.academicRankDocument &&
+                      errors.academicRankDocument
+                    }
+                    feedback={errors.academicRankDocument}
+                    accept=".pdf"
+                  />
+                </Form.Group>
               </Col>
             </Row>
 
@@ -123,12 +225,24 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
               </Col>
 
               <Col>
-                <CustomInput
-                  label="Work Experience Document"
-                  name="workExperienceDocument"
-                  type="file"
-                  accept=".pdf"
-                />
+                <Form.Group controlId={`workExperienceDocument`}>
+                  <Form.Label>Work Experience Document</Form.Label>
+                  <Form.Control
+                    type="file"
+                    name="workExperienceDocument"
+                    onChange={(event) => {
+                      values.workExperienceDocument =
+                        event.currentTarget.files[0];
+                    }}
+                    onBlur={handleBlur}
+                    isInvalid={
+                      touched.workExperienceDocument &&
+                      errors.workExperienceDocument
+                    }
+                    feedback={errors.workExperienceDocument}
+                    accept=".pdf"
+                  />
+                </Form.Group>
               </Col>
             </Row>
 
@@ -156,12 +270,25 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
                 />
               </Col>
               <Col>
-                <CustomInput
-                  label="Teaching Experience Document"
-                  name="teachingExperienceDocument"
-                  type="file"
-                  accept=".pdf"
-                />
+                <Form.Group controlId={`teachingExperienceDocument`}>
+                  <Form.Label>Teaching Experience Document</Form.Label>
+                  <Form.Control
+                    type="file"
+                    name="teachingExperienceDocument"
+                    onChange={(event) => {
+                      values.teachingExperienceDocument =
+                        event.currentTarget.files[0];
+                      console.log(values.teachingExperienceDocument);
+                    }}
+                    onBlur={handleBlur}
+                    isInvalid={
+                      touched.teachingExperienceDocument &&
+                      errors.teachingExperienceDocument
+                    }
+                    feedback={errors.teachingExperienceDocument}
+                    accept=".pdf"
+                  />
+                </Form.Group>
               </Col>
             </Row>
 
@@ -180,12 +307,25 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
                 ></CustomConditionalInput>
               </Col>
               <Col>
-                <CustomInput
-                  label="Research Experience Document"
-                  name="researchExperienceDocument"
-                  type="file"
-                  accept=".pdf"
-                />
+                <Form.Group controlId={`researchExperienceDocument`}>
+                  <Form.Label>Research Experience Document</Form.Label>
+                  <Form.Control
+                    type="file"
+                    name="researchExperienceDocument"
+                    onChange={(event) => {
+                      values.researchExperienceDocument =
+                        event.currentTarget.files[0];
+                      console.log(values.researchExperienceDocument);
+                    }}
+                    onBlur={handleBlur}
+                    isInvalid={
+                      touched.researchExperienceDocument &&
+                      errors.researchExperienceDocument
+                    }
+                    feedback={errors.researchExperienceDocument}
+                    accept=".pdf"
+                  />
+                </Form.Group>
               </Col>
             </Row>
 
@@ -203,23 +343,41 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
                 />
               </Col>
               <Col>
-                <CustomInput
-                  label="KPI Document"
-                  name="kpiDocument"
-                  type="file"
-                  accept=".pdf"
-                />
+                <Form.Group controlId={`kpiDocument`}>
+                  <Form.Label>KPI Document</Form.Label>
+                  <Form.Control
+                    type="file"
+                    name="kpiDocument"
+                    onChange={(event) => {
+                      values.kpiDocument = event.currentTarget.files[0];
+                      console.log(values.kpiDocument);
+                    }}
+                    onBlur={handleBlur}
+                    isInvalid={touched.kpiDocument && errors.kpiDocument}
+                    feedback={errors.kpiDocument}
+                    accept=".pdf"
+                  />
+                </Form.Group>
               </Col>
             </Row>
 
             <br />
+            <Form.Group controlId={`strategicPlanDocument`}>
+                  <Form.Label>KPI Document</Form.Label>
+                  <Form.Control
+                    type="file"
+                    name="strategicPlanDocument"
+                    onChange={(event) => {
+                      values.strategicPlanDocument = event.currentTarget.files[0];
+                      console.log(values.strategicPlanDocument);
+                    }}
+                    onBlur={handleBlur}
+                    isInvalid={touched.strategicPlanDocument && errors.strategicPlanDocument}
+                    feedback={errors.strategicPlanDocument}
+                    accept=".pdf"
+                  />
+                </Form.Group>
 
-            <CustomInput
-              label="Strategic Plan Document"
-              name="strategicPlanDocument"
-              type="file"
-              accept=".pdf"
-            />
 
             <br />
             <br />
@@ -238,5 +396,7 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
         </>
       )}
     </Formik>
+    <ProgressModal show={show} progress={progress} onClose={setShow}/>
+    </>
   );
 };
