@@ -6,7 +6,10 @@ import * as Yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { DEPARTMENTS } from "../constant";
 import {Card} from 'react-bootstrap'
+import { useAtom } from "jotai";
+import { authAtom } from "../atoms/authAtom";
 export default function ApplicantSignUp() {
+  const [auth,setAuth] = useAtom(authAtom);
   const validationSchema = Yup.object().shape({
     email: Yup.string()
       .email("Invalid email address")
@@ -52,6 +55,12 @@ export default function ApplicantSignUp() {
       const response = await auth.json();
       if (response.token) {
         localStorage.setItem("token", response.token);
+        localStorage.setItem("role", response.role);
+        setAuth({
+          token: response.token,
+          role: response.role,
+          isAuthenticated: true,
+        });
         navigate("/dashboard");
       } else {
         setStatus(response.message);

@@ -13,15 +13,19 @@ import { OpenVacancies } from "../users/OpenVacancies";
 import { Route, Routes } from 'react-router-dom';
 import SignIn from '../../componenets/signIn';
 import ApplicantSignUp from '../../componenets/signUp';
+import IsAuth from "../../hooks/useAuth";
+import { authAtom, useIsAuthenticated } from "../../atoms/authAtom";
+import { useAtom } from "jotai";
 
 
 export const Homepage = () => {
+  const [auth, setAuth] = useAtom(authAtom);
   return (
     <div className="container">
       <Header />
-      <SideBar />
+      { auth.isAuthenticated && <SideBar/>}
       <div className="content">
-        <SearchBar />
+        {auth.isAuthenticated && <SearchBar/>}
         <Routes>
           <Route path='/signin' element={<SignIn/>} />
           <Route path='/signup' element={<ApplicantSignUp />} />
@@ -30,7 +34,9 @@ export const Homepage = () => {
           <Route path="/Offices" element={<Offices />} />
           <Route path="/Metric" element={<Metric />} />
           <Route path="/Roles" element={<Roles />} />
-          <Route path="/OpenVacancies" element={<OpenVacancies />} />
+          <Route path="/OpenVacancies" element={<IsAuth>
+            <OpenVacancies />
+          </IsAuth>} />
         </Routes>
       </div>
     </div>

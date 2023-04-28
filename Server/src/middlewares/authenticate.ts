@@ -87,4 +87,4 @@ authRouter.get('/protected', authenticate, async (req, res) => {
   }
 });
 
-export default authRouter;
+export default authenticate;

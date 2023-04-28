@@ -3,7 +3,9 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import { BASE_URL } from '../constant';
 import { useNavigate } from 'react-router-dom';
-
+import { useAtom } from 'jotai';
+import { authAtom } from '../atoms/authAtom';
+import {Link} from 'react-router-dom'
 const validationSchema = Yup.object().shape({
   email: Yup.string()
     .email("Invalid email address")
@@ -18,6 +20,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const LoginForm = () => {
+  const [auth, setAuth] = useAtom(authAtom);
   const handleSubmit = (values, { setSubmitting, setStatus }) => {
     onSubmit(values, setStatus);
     setSubmitting(false);
@@ -38,11 +41,15 @@ const LoginForm = () => {
         body: JSON.stringify(user),
       });
       const response = await auth.json();
-      console.log(response);
-
       if (response.token) {
         localStorage.setItem("token", response.token);
-        navigate("/dashboard");
+        localStorage.setItem("role", response.role);
+        setAuth({
+          token: response.token,
+          role: response.role,
+          isAuthenticated: true,
+        });
+        if(response.role == "APPLICANT") navigate('/OpenVacancies')
       } else {
         setStatus("Invalid email or password");
       }
@@ -54,11 +61,11 @@ const LoginForm = () => {
     }
   };
   return (
-  
-    <Card className='p-5'>
+  <div className='d-flex align-items-center' style={{width: "100%",height: "80vh"}}>
+    <Card className='p-5 mt-5'>
     <Card.Body>
     <h1>AASTU JOB VACANCY</h1>
-    <h2>Login</h2>
+    <h5 className='mt-2'>Login</h5>
     <Formik initialValues={{ email: '', password: '' }} validationSchema={validationSchema} onSubmit={handleSubmit}>
       {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status }) => (
     
@@ -100,8 +107,12 @@ const LoginForm = () => {
         </Form>
       )}
     </Formik>
+    <p>don't have an account? <span>
+        <Link to='/signup'>register</Link>
+      </span></p>
     </Card.Body>
   </Card>
+  </div>
   );
 };
 

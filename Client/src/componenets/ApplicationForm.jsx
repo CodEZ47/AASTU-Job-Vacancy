@@ -1,6 +1,6 @@
 import { Formik } from "formik";
 import { Button, Col, Row, Form } from "react-bootstrap";
-
+import { useState, useEffect } from "react";
 import { applicationFormSchema } from "../schemas/appformsch";
 import CustomInput from "./custom_inputs/CustomInput";
 import CustomSelect from "./custom_inputs/CustomSelect";
@@ -8,16 +8,16 @@ import CustomConditionalInput from "./custom_inputs/CustomConditionalInput";
 import { handleUpload } from "../utils/upload";
 import { BASE_URL } from "../constant";
 import ProgressModal from "./ProgresModal";
-
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 // import "../../styles/app.module.css";
 
-export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
+export const ApplicationForm = ({ vacancy, dataTypeInfo, setApplicationForm , setShowOpenVacancies }) => {
   const [show, setShow] = useState(false);
-  const [percent, setPercent] = useState(0);
-  const [uploading, setUploading] = useState(false);
-  const [uploadError, setUploadError] = useState(false);
-  const [uploadSuccess, setUploadSuccess] = useState(false);
+  const navigate = useNavigate();
   const onSubmit = async (values, actions) => {
+    setShow(true)
     const {
       workExperience,
       academicRank,
@@ -65,6 +65,7 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
     ];
     const res = await handleUpload(documents)
     //returned promise allSettle
+    
     let docs = {}
     let allSettled = res.map((r, i) => {
       if (r.status === 'fulfilled') {
@@ -73,7 +74,7 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
         console.log('error uploading file');
       }
     })
-    console.log(docs);
+   
     let data = {
       data: d,
       documents: docs
@@ -89,8 +90,15 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
         body: JSON.stringify(data),
       }
     );
-   
-    console.log(res, 'after')
+    if(application.status === 200) {
+      setShow(false)
+      toast.success('Application submitted successfully')
+      setApplicationForm(false)
+      setShowOpenVacancies(true)
+    } else {
+      setShow(false)
+      toast.error('Error submitting application')
+    }
     const response = await application.json();
     console.log(response);
   };
@@ -99,8 +107,6 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
     <>
     <Formik
       initialValues={{
-        name: "",
-        email: "",
         academicRank: "",
         workExperience: "",
         teachingExperience: "",
@@ -116,6 +122,7 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
         no_publications: "",
         strategicPlanDocument: undefined,
       }}
+      validationSchema={applicationFormSchema}
       onSubmit={onSubmit}
     >
       {({
@@ -129,6 +136,7 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
         status,
       }) => (
         <>
+        
           <Form noValidate onSubmit={handleSubmit} className="my-3 p-3 shadow">
             <h2>Apply for {vacancy[dataTypeInfo[0]]}</h2>
             <p>{vacancy[dataTypeInfo[1]]}</p>
@@ -138,20 +146,6 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
               {vacancy[dataTypeInfo[2]]}
             </p>
             <br />
-
-            <CustomInput
-              label="Full Name"
-              name="name"
-              type="text"
-              placeholder="Enter your Full Name"
-            />
-
-            <CustomInput
-              label="Email"
-              name="email"
-              type="text"
-              placeholder="Enter your email"
-            />
 
             <br />
             <br />
@@ -197,6 +191,13 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
                     feedback={errors.academicRankDocument}
                     accept=".pdf"
                   />
+                  {
+                    errors.academicRankDocument && (
+                      <Form.Control.Feedback type="invalid">
+                        {errors.academicRankDocument}
+                      </Form.Control.Feedback>
+                    )
+                  }
                 </Form.Group>
               </Col>
             </Row>
@@ -242,6 +243,9 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
                     feedback={errors.workExperienceDocument}
                     accept=".pdf"
                   />
+                  {errors.workExperienceDocument && ( <Form.Control.Feedback type="invalid">
+                    {errors.workExperienceDocument}
+                  </Form.Control.Feedback>)}
                 </Form.Group>
               </Col>
             </Row>
@@ -288,6 +292,13 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
                     feedback={errors.teachingExperienceDocument}
                     accept=".pdf"
                   />
+                  {
+                    errors.teachingExperienceDocument && (
+                      <Form.Control.Feedback type="invalid">
+                        {errors.teachingExperienceDocument}
+                      </Form.Control.Feedback>  
+                    )
+                  }
                 </Form.Group>
               </Col>
             </Row>
@@ -325,6 +336,13 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
                     feedback={errors.researchExperienceDocument}
                     accept=".pdf"
                   />
+                  {
+                    errors.researchExperienceDocument && (
+                      <Form.Control.Feedback type="invalid">
+                        {errors.researchExperienceDocument}
+                      </Form.Control.Feedback>
+                    )
+                  }
                 </Form.Group>
               </Col>
             </Row>
@@ -357,7 +375,15 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
                     feedback={errors.kpiDocument}
                     accept=".pdf"
                   />
+                  {
+                    errors.kpiDocument && (
+                      <Form.Control.Feedback type="invalid">
+                        {errors.kpiDocument}
+                      </Form.Control.Feedback>
+                    )
+                  }
                 </Form.Group>
+
               </Col>
             </Row>
 
@@ -376,6 +402,13 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
                     feedback={errors.strategicPlanDocument}
                     accept=".pdf"
                   />
+                  {
+                    errors.strategicPlanDocument && (
+                      <Form.Control.Feedback type="invalid">
+                        {errors.strategicPlanDocument}
+                      </Form.Control.Feedback>
+                    )
+                  }
                 </Form.Group>
 
 
@@ -396,7 +429,7 @@ export const ApplicationForm = ({ vacancy, dataTypeInfo }) => {
         </>
       )}
     </Formik>
-    <ProgressModal show={show} progress={progress} onClose={setShow}/>
+    <ProgressModal show={show} percent={100} onClose={setShow}/>
     </>
   );
 };

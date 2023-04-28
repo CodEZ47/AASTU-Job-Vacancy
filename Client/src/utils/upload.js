@@ -14,11 +14,9 @@ export const handleUpload = async (documents) => {
       uploadTask.on("state_changed", (snapshot) => {
         const progress =
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log(`Upload is ${progress}% done`);
       });
       uploadTask.then(() => {
         count++;
-        console.log(count);
         getDownloadURL(uploadTask.snapshot.ref).then((url) => {
           resolve({
             [file.name]: url,
