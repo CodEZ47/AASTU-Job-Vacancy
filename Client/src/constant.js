@@ -1,4 +1,6 @@
-export const BASE_URL = 'https://jobapiaastu.onrender.com';
+const LOCAL_URL = 'http://localhost:4000';
+const REMOTE_URL = 'https://jobapiaastu.onrender.com';
+export const BASE_URL = LOCAL_URL;
 export const DEPARTMENTS = [
     "Software Engineering",
     "Electrical Engineering",

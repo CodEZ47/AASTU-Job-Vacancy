@@ -177,8 +177,8 @@ router.post("/:id/applications", authenticate, async (req, res) => {
       researchExperience: z.string(),
       KPI: z.number().min(0).max(100),
       vacancyId: z.string(),
-      no_project: z.number().optional(),
-      no_publication: z.number().optional(),
+      no_projects: z.number().optional(),
+      no_publications: z.number().optional(),
     });
     const docShema = z.object({
       workExperienceDocument: z.string(),
@@ -202,8 +202,8 @@ router.post("/:id/applications", authenticate, async (req, res) => {
         KPI: data.KPI,
         vacancyId: id,
         userId: req.userId,
-        no_project: data.no_project,
-        no_publication: data.no_publication,
+        no_project: data.no_projects,
+        no_publication: data.no_publications,
         workExperienceDocument: docData.workExperienceDocument,
         teachingExperienceDocument: docData.teachingExperienceDocument,
         researchExperienceDocument: docData.researchExperienceDocument,
@@ -214,6 +214,7 @@ router.post("/:id/applications", authenticate, async (req, res) => {
     });
     res.json(application);
   } catch (err) {
+    console.log(err)
     res.status(400).json(err);
   }
 });

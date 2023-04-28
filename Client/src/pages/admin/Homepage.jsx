@@ -16,6 +16,7 @@ import ApplicantSignUp from '../../componenets/signUp';
 import IsAuth from "../../hooks/useAuth";
 import { authAtom, useIsAuthenticated } from "../../atoms/authAtom";
 import { useAtom } from "jotai";
+import RedirectUser from "../../hooks/RedirectUser";
 
 
 export const Homepage = () => {
@@ -27,6 +28,7 @@ export const Homepage = () => {
       <div className="content">
         {auth.isAuthenticated && <SearchBar/>}
         <Routes>
+          <Route path='/' element={<RedirectUser/>}></Route>
           <Route path='/signin' element={<SignIn/>} />
           <Route path='/signup' element={<ApplicantSignUp />} />
           <Route path="/Users" element={<Users />} />
