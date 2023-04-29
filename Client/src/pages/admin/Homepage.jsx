@@ -3,6 +3,7 @@ import { Header } from "../../componenets/Header";
 import { SearchBar } from "../../componenets/SearchBar";
 import { SideBar } from "../../componenets/SideBar";
 
+import { AddPositions } from "./AddPositions";
 import { Positions } from "./Positions";
 import { Users } from "./Users";
 import { Offices } from "./Offices";
@@ -17,7 +18,6 @@ import IsAuth from "../../hooks/useAuth";
 import { authAtom, useIsAuthenticated } from "../../atoms/authAtom";
 import { useAtom } from "jotai";
 import RedirectUser from "../../hooks/RedirectUser";
-
 
 export const Homepage = () => {
   const [auth, setAuth] = useAtom(authAtom);
