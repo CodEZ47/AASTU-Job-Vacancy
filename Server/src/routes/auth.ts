@@ -31,7 +31,7 @@ authRouter.post('/register', async (req, res) => {
         password: hashedPassword,
       },
     });
-    const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ userId: newUser.id, role: role }, process.env.JWT_SECRET);
     res.json({ token });
   } catch (error) {
     console.error(error);
@@ -52,7 +52,7 @@ authRouter.post('/login', async (req, res) => {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
     const token = jwt.sign({ userId: existingUser.id }, process.env.JWT_SECRET);
-    res.json({ token });
+    res.json({ token, role: existingUser.role });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Something went wrong' });

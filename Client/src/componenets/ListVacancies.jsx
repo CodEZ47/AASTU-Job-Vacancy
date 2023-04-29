@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ListGroup, Button } from "react-bootstrap";
 import { ApplicationForm } from "./ApplicationForm";
-
+import { ToastContainer } from "react-toastify";
 const ListVacancies = ({ vacancies, dataTypeInfo }) => {
   const [showApplicationForm, setShowApplicationForm] = useState(false);
   const [showOpenVacancies, setShowOpenVacancies] = useState(true);
@@ -19,6 +19,7 @@ const ListVacancies = ({ vacancies, dataTypeInfo }) => {
 
   return (
     <>
+    <ToastContainer />
       {showOpenVacancies && (
         <ListGroup>
           {vacancies.map((vacancy) => (
@@ -33,8 +34,9 @@ const ListVacancies = ({ vacancies, dataTypeInfo }) => {
               <Button
                 variant="primary"
                 onClick={() => handleApplyNowClick(vacancy)}
+                disabled={vacancy.applied}
               >
-                Apply Now
+                {vacancy.applied ? "Applied" : "Apply Now"}
               </Button>
             </ListGroup.Item>
           ))}
@@ -53,6 +55,8 @@ const ListVacancies = ({ vacancies, dataTypeInfo }) => {
           <ApplicationForm
             vacancy={selectedVacancy}
             dataTypeInfo={dataTypeInfo}
+            setApplicationForm = {setShowApplicationForm}
+            setShowOpenVacancies = {setShowOpenVacancies}
             onClose={() => setShowApplicationForm(false)}
           />
         </>

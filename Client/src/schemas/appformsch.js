@@ -4,54 +4,55 @@ import * as Yup from "yup";
 const allowedExtensions = ["pdf"];
 
 export const applicationFormSchema = Yup.object().shape({
-  name: Yup.string().required("Required"),
-  email: Yup.string()
-    .email("Invalid email")
-    .matches(/@aastu\.edu\.et$/, "Email must end with @aastu.edu.et")
-    .required("Required"),
-  academicRank: Yup.string().required("Required"),
-  workExperience: Yup.string().required("Required"),
-  teachingExperience: Yup.string().required("Required"),
-  researchExperience: Yup.number().required("Required"),
-
   KPI: Yup.number()
     .required("Required")
     .min(0, "KPI must be at least 0")
     .max(100, "KPI cannot be greater than 100"),
-  academicRankDocument: Yup.mixed()
-    .required("A file is required")
-    .test("fileFormat", "Unsupported Format Pdf only", (value) => {
-      let fileExtension = value.split(".").pop().toLowerCase();
-      return value && allowedExtensions.includes(fileExtension);
-    }),
+  teachingExperience: Yup.string().required("Required"),
+  researchExperience: Yup.string().required("Required"),
+  workExperience: Yup.string().required("Required"),
+  academicRank: Yup.string().required("Required"),
+
   workExperienceDocument: Yup.mixed()
-    .required("A file is required")
-    .test("fileFormat", "Unsupported Format Pdf only", (value) => {
-      let fileExtension = value.split(".").pop().toLowerCase();
-      return value && allowedExtensions.includes(fileExtension);
-    }),
+    .required("Required")
+    .test(
+      "fileFormat",
+      "Unsupported Format",
+      (value) => value && allowedExtensions.includes(value.type.split("/")[1])
+    ),
   teachingExperienceDocument: Yup.mixed()
-    .required("A file is required")
-    .test("fileFormat", "Unsupported Format Pdf only", (value) => {
-      let fileExtension = value.split(".").pop().toLowerCase();
-      return value && allowedExtensions.includes(fileExtension);
-    }),
-  kpiDocument: Yup.mixed()
-    .required("A file is required")
-    .test("fileFormat", "Unsupported Format Pdf only", (value) => {
-      let fileExtension = value.split(".").pop().toLowerCase();
-      return value && allowedExtensions.includes(fileExtension);
-    }),
+    .required("Required")
+    .test(
+      "fileFormat",
+      "Unsupported Format",
+      (value) => value && allowedExtensions.includes(value.type.split("/")[1])
+    ),
   researchExperienceDocument: Yup.mixed()
-    .required("A file is required")
-    .test("fileFormat", "Unsupported Format Pdf only", (value) => {
-      let fileExtension = value.split(".").pop().toLowerCase();
-      return value && allowedExtensions.includes(fileExtension);
-    }),
+    .required("Required")
+    .test(
+      "fileFormat",
+      "Unsupported Format",
+      (value) => value && allowedExtensions.includes(value.type.split("/")[1])
+    ),
+  academicRankDocument: Yup.mixed()
+    .required("Required")
+    .test(
+      "fileFormat",
+      "Unsupported Format",
+      (value) => value && allowedExtensions.includes(value.type.split("/")[1])
+    ),
+  kpiDocument: Yup.mixed()
+    .required("Required")
+    .test(
+      "fileFormat",
+      "Unsupported Format",
+      (value) => value && allowedExtensions.includes(value.type.split("/")[1])
+    ),
   strategicPlanDocument: Yup.mixed()
-    .required("A file is required")
-    .test("fileFormat", "Unsupported Format Pdf only", (value) => {
-      let fileExtension = value.split(".").pop().toLowerCase();
-      return value && allowedExtensions.includes(fileExtension);
-    }),
+    .required("Required")
+    .test(
+      "fileFormat",
+      "Unsupported Format",
+      (value) => value && allowedExtensions.includes(value.type.split("/")[1])
+    ),
 });

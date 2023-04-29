@@ -28,8 +28,10 @@ enum LEVEL {
 model Position {
   id       String   @id @map("_id") @default(uuid())
   name      String
+  vacancy  Vacancy[]
   level     LEVEL
   description String
+  requirement String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   deletedAt DateTime?
@@ -55,16 +57,35 @@ model Application {
   userId   String
   vacancy  Vacancy  @relation(fields: [vacancyId], references: [id])
   vacancyId String
-  status   Status
+  academicRank String
+  workExperience Int
+  teachingExperience Int
+  KPI Int
+  no_project Int?
+  no_publication Int?
+  academicRankDocument String?
+  workExperienceDocument String?
+  teachingExperienceDocument String?
+  KPIDocument String?
+  strategicPlanDocument String?
+  researchExperience RESEARCH_EXPERIENCE_TYPE
+  researchExperienceDocument String?
+  status   Status @default(PENDING)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   deletedAt DateTime?
+}
+enum RESEARCH_EXPERIENCE_TYPE {
+  PROJECT
+  PUBLICATION
 }
 model Vacancy {
   id       String   @id @map("_id") @default(uuid())
   name     String
   description String
-  status   Status
+  extended Boolean
+  position Position @relation(fields: [positionId], references: [id])
+  positionId String
   createdAt DateTime @default(now())
   application Application[]
   updatedAt DateTime @updatedAt
