@@ -6,6 +6,7 @@ export const SideBar = () => {
     <div className="wrapper">
       <div className="sidebar">
         <ul>
+          <Links link="/AddPositions">Add Positions</Links>
           <Links link="/Users">Users</Links>
           <Links link="/Position">Position</Links>
           <Links link="/Offices">Offices</Links>

@@ -3,6 +3,7 @@ import { Header } from "../../componenets/Header";
 import { SearchBar } from "../../componenets/SearchBar";
 import { SideBar } from "../../componenets/SideBar";
 
+import { AddPositions } from "./AddPositions";
 import { Positions } from "./Positions";
 import { Users } from "./Users";
 import { Offices } from "./Offices";
@@ -10,10 +11,9 @@ import { Metric } from "./Metric";
 import { Roles } from "./Roles";
 import { OpenVacancies } from "../users/OpenVacancies";
 
-import { Route, Routes } from 'react-router-dom';
-import SignIn from '../../componenets/signIn';
-import ApplicantSignUp from '../../componenets/signUp';
-
+import { Route, Routes } from "react-router-dom";
+import SignIn from "../../componenets/signIn";
+import ApplicantSignUp from "../../componenets/signUp";
 
 export const Homepage = () => {
   return (
@@ -23,14 +23,15 @@ export const Homepage = () => {
       <div className="content">
         <SearchBar />
         <Routes>
-          <Route path='/signin' element={<SignIn/>} />
-          <Route path='/signup' element={<ApplicantSignUp />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<ApplicantSignUp />} />
           <Route path="/Users" element={<Users />} />
           <Route path="/Position" element={<Positions />} />
           <Route path="/Offices" element={<Offices />} />
           <Route path="/Metric" element={<Metric />} />
           <Route path="/Roles" element={<Roles />} />
           <Route path="/OpenVacancies" element={<OpenVacancies />} />
+          <Route path="/AddPositions" element={<AddPositions />} />
         </Routes>
       </div>
     </div>
