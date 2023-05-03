@@ -1,3 +1,4 @@
+import ListUserApplications from "./ListUserApplications";
 import ListUsers from "./ListUsers";
 import ListVacancies from "./ListVacancies";
 
@@ -9,6 +10,8 @@ const List = ({ elems, dataHeads }) => {
         <ListUsers users={elems} dataTypeInfo={dataHeads[0]} />
       ) : type === 4 ? (
         <ListVacancies vacancies={elems} dataTypeInfo={dataHeads[0]} />
+      ) : type === 5 ? (
+        <ListUserApplications />
       ) : (
         <h1>Nothing to see here!</h1>
       )}
