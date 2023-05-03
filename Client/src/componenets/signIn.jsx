@@ -69,7 +69,7 @@ const LoginForm = () => {
     <Formik initialValues={{ email: '', password: '' }} validationSchema={validationSchema} onSubmit={handleSubmit}>
       {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting, status }) => (
     
-        <Form noValidate onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit}>
           {status && <div className="alert alert-danger">{status}</div>}
           <Form.Group controlId="email">
             <Form.Label>Email address</Form.Label>
@@ -102,7 +102,6 @@ const LoginForm = () => {
    
           <Button type="submit" className="mt-3" disabled={isSubmitting}>
             {isSubmitting ? 'Loading...' : 'Sign in'}
-
           </Button>
         </Form>
       )}
