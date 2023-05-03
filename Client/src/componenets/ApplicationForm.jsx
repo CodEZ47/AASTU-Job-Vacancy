@@ -21,7 +21,7 @@ export const ApplicationForm = ({
 }) => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
-  const [typeOf,setTypeOf ] = useState("");
+  const [typeOf, setTypeOf] = useState("");
   const onSubmit = async (values, actions) => {
     const {
       workExperience,
@@ -32,7 +32,7 @@ export const ApplicationForm = ({
       no_projects,
       no_publications,
     } = values;
-   
+
     let d = {
       workExperience: parseInt(workExperience),
       academicRank,
@@ -40,7 +40,7 @@ export const ApplicationForm = ({
       researchExperience,
       KPI,
       no_projects: parseInt(no_projects),
-      no_publications:parseInt(no_publications),
+      no_publications: parseInt(no_publications),
       vacancyId: vacancy.id,
     };
     const documents = [
@@ -149,17 +149,14 @@ export const ApplicationForm = ({
             >
               <h2>Apply for {vacancy[dataTypeInfo[0]]}</h2>
               <p>{vacancy[dataTypeInfo[1]]}</p>
-
               <p>
                 <b>Requirements:</b>
                 {vacancy[dataTypeInfo[2]]}
               </p>
               <br />
-
               <br />
               <br />
               <br />
-
               <Row>
                 <Col>
                   <CustomSelect
@@ -210,7 +207,6 @@ export const ApplicationForm = ({
               </Row>
 
               <br />
-
               <Row>
                 <Col>
                   <CustomSelect
@@ -258,9 +254,7 @@ export const ApplicationForm = ({
                   </Form.Group>
                 </Col>
               </Row>
-
               <br />
-
               <Row>
                 <Col>
                   <CustomSelect
@@ -309,9 +303,7 @@ export const ApplicationForm = ({
                   </Form.Group>
                 </Col>
               </Row>
-
               <br />
-
               <Row>
                 <Col>
                   <CustomConditionalInput
@@ -352,9 +344,7 @@ export const ApplicationForm = ({
                   </Form.Group>
                 </Col>
               </Row>
-
               <br />
-
               <Row>
                 <Col>
                   <CustomInput
@@ -389,7 +379,6 @@ export const ApplicationForm = ({
                   </Form.Group>
                 </Col>
               </Row>
-
               <br />
               <Form.Group controlId={`strategicPlanDocument`}>
                 <Form.Label>KPI Document</Form.Label>
@@ -414,10 +403,8 @@ export const ApplicationForm = ({
                   </Form.Control.Feedback>
                 )}
               </Form.Group>
-
               <br />
               <br />
-
               <Button
                 variant="primary"
                 disabled={isSubmitting}

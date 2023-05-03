@@ -19,7 +19,7 @@ const ListVacancies = ({ vacancies, dataTypeInfo }) => {
 
   return (
     <>
-    <ToastContainer />
+      <ToastContainer />
       {showOpenVacancies && (
         <ListGroup>
           {vacancies.map((vacancy) => (
@@ -55,8 +55,8 @@ const ListVacancies = ({ vacancies, dataTypeInfo }) => {
           <ApplicationForm
             vacancy={selectedVacancy}
             dataTypeInfo={dataTypeInfo}
-            setApplicationForm = {setShowApplicationForm}
-            setShowOpenVacancies = {setShowOpenVacancies}
+            setApplicationForm={setShowApplicationForm}
+            setShowOpenVacancies={setShowOpenVacancies}
             onClose={() => setShowApplicationForm(false)}
           />
         </>
