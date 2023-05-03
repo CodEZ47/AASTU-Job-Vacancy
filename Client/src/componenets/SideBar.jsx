@@ -13,7 +13,7 @@ export const SideBar = () => {
             auth.role === "APPLICANT" ?
             <>
               <Links link="/OpenVacancies">Open Vacancies</Links>
-              
+              <Links link="/PostVacancy">Post Vacancy</Links>
               </>
               :
               (
