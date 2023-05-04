@@ -7,7 +7,7 @@ import CustomSelect from "./custom_inputs/CustomSelect";
 import CustomConditionalInput from "./custom_inputs/CustomConditionalInput";
 import { handleUpload } from "../utils/upload";
 import { BASE_URL } from "../constant";
-import ProgressModal from "./ProgresModal";
+import ProgressModal from "./modals/ProgresModal";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
