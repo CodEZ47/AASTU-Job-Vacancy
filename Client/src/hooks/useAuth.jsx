@@ -1,8 +1,9 @@
 import { Navigate } from 'react-router';
-import { useIsAuthenticated } from '../atoms/authAtom';
-export default function IsAuth({children}){
+import { authAtom, useIsAuthenticated } from '../atoms/authAtom';
+import { useAtom } from 'jotai';
+export default function IsAuth({children, role}){
+    const [auth,setAuth] = useAtom(authAtom);
     const local = useIsAuthenticated();
-    console.log(local, 'local')
-    if (local != null) return children;
+    if (local != null && role.find((r)=> auth.role == r) !== undefined) return children;
     else return <Navigate to='/signin' replace/>
 }

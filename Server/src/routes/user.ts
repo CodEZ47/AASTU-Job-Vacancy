@@ -1,6 +1,7 @@
 import express from 'express'
 import prisma from '../lib/prisma'
 import { z } from 'zod'
+import authenticate from '../middlewares/authenticate'
 const router = express.Router()
 router.get('/', async (req, res) => {
     const users = await prisma.user.findMany();
@@ -81,6 +82,20 @@ router.delete('/:id', async (req, res) => {
     }
 }
 )
+router.get('/applications',authenticate, async (req, res) => {
+    try{
+        const applications = await prisma.application.findMany({
+            where: {
+                userId: req.userId
+            }
+        });
+        res.json(applications);
+    }
+    catch(e){
+        console.log(e);
+        res.status(400).json(e);
+    }
+})
 export default router
 /**
  * vacant position

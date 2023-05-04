@@ -18,7 +18,7 @@ import IsAuth from "../../hooks/useAuth";
 import { authAtom, useIsAuthenticated } from "../../atoms/authAtom";
 import { useAtom } from "jotai";
 import RedirectUser from "../../hooks/RedirectUser";
-
+import {PostVacancyForm} from "../../componenets/PostVacancyForm";
 export const Homepage = () => {
   const [auth, setAuth] = useAtom(authAtom);
   return (
@@ -36,12 +36,12 @@ export const Homepage = () => {
           <Route path="/Offices" element={<Offices />} />
           <Route path="/Metric" element={<Metric />} />
           <Route path="/Roles" element={<Roles />} />
-          <Route path="/OpenVacancies" element={<IsAuth>
+          <Route path="/OpenVacancies" element={<IsAuth role={["APPLICANT"]}>
             <OpenVacancies />
           </IsAuth>} />
 
-          <Route path="/PostVacancy" element={<IsAuth>
-            <PostVacancy />
+          <Route path="/PostVacancy" element={<IsAuth role={["ADMIN", "OFFICE"]}>
+            <PostVacancyForm/>
           </IsAuth>} />
 
         </Routes>

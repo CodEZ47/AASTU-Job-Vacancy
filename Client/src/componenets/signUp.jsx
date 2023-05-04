@@ -26,8 +26,8 @@ export default function ApplicantSignUp() {
     department: Yup.string().required("Department is required"),
   });
 
-  const handleSubmit = (values, { setSubmitting, setStatus }) => {
-    onSubmit(values, setStatus);
+  const handleSubmit = async (values, { setSubmitting, setStatus }) => {
+    await onSubmit(values, setStatus);
     setSubmitting(false);
   };
   const navigate = useNavigate();
