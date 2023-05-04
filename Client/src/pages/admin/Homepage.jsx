@@ -10,10 +10,12 @@ import { Offices } from "./Offices";
 import { Metric } from "./Metric";
 import { Roles } from "./Roles";
 import { OpenVacancies } from "../users/OpenVacancies";
+import { MyApplications } from "../users/MyApplications";
+import { PostVacancy } from "../users/PostVacancy";
 
-import { Route, Routes } from 'react-router-dom';
-import SignIn from '../../componenets/signIn';
-import ApplicantSignUp from '../../componenets/signUp';
+import { Route, Routes } from "react-router-dom";
+import SignIn from "../../componenets/signIn";
+import ApplicantSignUp from "../../componenets/signUp";
 import IsAuth from "../../hooks/useAuth";
 import { authAtom, useIsAuthenticated } from "../../atoms/authAtom";
 import { useAtom } from "jotai";
@@ -24,13 +26,13 @@ export const Homepage = () => {
   return (
     <div className="container">
       <Header />
-      { auth.isAuthenticated && <SideBar/>}
+      {auth.isAuthenticated && <SideBar />}
       <div className="content">
-        {auth.isAuthenticated && <SearchBar/>}
+        {auth.isAuthenticated && <SearchBar />}
         <Routes>
-          <Route path='/' element={<RedirectUser/>}></Route>
-          <Route path='/signin' element={<SignIn/>} />
-          <Route path='/signup' element={<ApplicantSignUp />} />
+          <Route path="/" element={<RedirectUser />}></Route>
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<ApplicantSignUp />} />
           <Route path="/Users" element={<Users />} />
           <Route path="/Position" element={<Positions />} />
           <Route path="/Offices" element={<Offices />} />
@@ -43,7 +45,10 @@ export const Homepage = () => {
           <Route path="/PostVacancy" element={<IsAuth role={["ADMIN", "OFFICE"]}>
             <PostVacancyForm/>
           </IsAuth>} />
-
+          
+          <Route path="/MyApplications" element={<IsAuth role={["ADMIN", "OFFICE"]}>
+            <MyApplications/>
+          </IsAuth>} />
         </Routes>
       </div>
     </div>

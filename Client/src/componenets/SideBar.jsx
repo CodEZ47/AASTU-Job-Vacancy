@@ -4,7 +4,7 @@ import { useAtom } from "jotai";
 import { authAtom } from "../atoms/authAtom";
 
 export const SideBar = () => {
-  const [auth,setAuth] = useAtom(authAtom);
+  const [auth, setAuth] = useAtom(authAtom);
   return (
     <div className="wrapper">
       <div className="sidebar">
