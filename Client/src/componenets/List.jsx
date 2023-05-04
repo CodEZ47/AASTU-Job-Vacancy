@@ -1,6 +1,6 @@
-import ListUserApplications from "./ListUserApplications";
-import ListUsers from "./ListUsers";
-import ListVacancies from "./ListVacancies";
+import ListUserApplications from "./lists/ListUserApplications";
+import ListUsers from "./lists/ListUsers";
+import ListVacancies from "./lists/ListVacancies";
 
 const List = ({ elems, dataHeads }) => {
   const type = dataHeads[1]; //number that defines what type of data is being sent.[0 for users, 1 for positions, etc..]
@@ -11,7 +11,10 @@ const List = ({ elems, dataHeads }) => {
       ) : type === 4 ? (
         <ListVacancies vacancies={elems} dataTypeInfo={dataHeads[0]} />
       ) : type === 5 ? (
-        <ListUserApplications />
+        <ListUserApplications
+          applications={elems}
+          dataTypeInfo={dataHeads[0]}
+        />
       ) : (
         <h1>Nothing to see here!</h1>
       )}

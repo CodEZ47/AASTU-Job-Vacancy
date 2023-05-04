@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ListGroup, Button } from "react-bootstrap";
-import { ApplicationForm } from "./ApplicationForm";
+import { ApplicationForm } from "../ApplicationForm";
 import { ToastContainer } from "react-toastify";
 const ListVacancies = ({ vacancies, dataTypeInfo }) => {
   const [showApplicationForm, setShowApplicationForm] = useState(false);
