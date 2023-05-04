@@ -11,6 +11,7 @@ import { Metric } from "./Metric";
 import { Roles } from "./Roles";
 import { OpenVacancies } from "../users/OpenVacancies";
 import { MyApplications } from "../users/MyApplications";
+import { PostVacancy } from "../users/PostVacancy";
 
 import { Route, Routes } from "react-router-dom";
 import SignIn from "../../componenets/signIn";
@@ -53,10 +54,14 @@ export const Homepage = () => {
               </IsAuth>
             }
           />
-          <Route path="/PostVacancy" element={<IsAuth>
-            <PostVacancy />
-          </IsAuth>} />
-
+          <Route
+            path="/PostVacancy"
+            element={
+              <IsAuth>
+                <PostVacancy />
+              </IsAuth>
+            }
+          />
         </Routes>
       </div>
     </div>
