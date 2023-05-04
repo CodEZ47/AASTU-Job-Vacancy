@@ -61,7 +61,7 @@ export default function ApplicantSignUp() {
           role: response.role,
           isAuthenticated: true,
         });
-        navigate("/dashboard");
+        navigate("/OpenVacancies");
       } else {
         setStatus(response.message);
       }

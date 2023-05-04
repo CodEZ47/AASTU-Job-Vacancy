@@ -13,6 +13,7 @@ export const SideBar = () => {
             <>
               <Links link="/OpenVacancies">Open Vacancies</Links>
               <Links link="/MyApplications">My Applications</Links>
+              <Links link="/PostVacancy">Post Vacancy</Links>
             </>
           ) : (
             <>

@@ -53,6 +53,10 @@ export const Homepage = () => {
               </IsAuth>
             }
           />
+          <Route path="/PostVacancy" element={<IsAuth>
+            <PostVacancy />
+          </IsAuth>} />
+
         </Routes>
       </div>
     </div>

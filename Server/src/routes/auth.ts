@@ -31,8 +31,8 @@ authRouter.post('/register', async (req, res) => {
         password: hashedPassword,
       },
     });
-    const token = jwt.sign({ userId: newUser.id, role: role }, process.env.JWT_SECRET);
-    res.json({ token });
+    const token = jwt.sign({ userId: newUser.id }, process.env.JWT_SECRET);
+    res.json({ token, role: data.role });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Something went wrong' });
