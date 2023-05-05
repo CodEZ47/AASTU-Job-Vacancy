@@ -1,30 +1,46 @@
-import React from "react";
-import { Links } from "./Links";
+import React, { useState } from "react";
+import { Nav } from "react-bootstrap";
 import { useAtom } from "jotai";
 import { authAtom } from "../atoms/authAtom";
+import styles from "../styles/sidebar.module.css";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 export const SideBar = () => {
   const [auth, setAuth] = useAtom(authAtom);
+  const [isOpen, setIsOpen] = useState(true);
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <div className="wrapper">
-      <div className="sidebar">
-        <ul>
+    <div
+      className={`${styles.wrapper} ${isOpen ? styles.open : styles.closed}`}
+    >
+      <button
+        className={`${styles.toggle} ${isOpen ? styles.open : styles.closed}`}
+        onClick={handleToggle}
+      >
+        {isOpen ? <IoIosArrowBack /> : <IoIosArrowForward />}
+      </button>
+      <div className={styles.sidebar}>
+        <Nav defaultActiveKey="/OpenVacancies" className="flex-column">
           {auth.role === "APPLICANT" ? (
             <>
-              <Links link="/OpenVacancies">Open Vacancies</Links>
-              <Links link="/MyApplications">My Applications</Links>
-              <Links link="/PostVacancy">Post Vacancy</Links>
+              <Nav.Link href="/OpenVacancies">Open Vacancies</Nav.Link>
+              <Nav.Link href="/MyApplications">My Applications</Nav.Link>
+              <Nav.Link href="/PostVacancy">Post Vacancy</Nav.Link>
             </>
           ) : (
             <>
-              <Links link="/Users">Users</Links>
-              <Links link="/Position">Position</Links>
-              <Links link="/Offices">Offices</Links>
-              <Links link="/Metric">Metric</Links>
-              <Links link="/Roles">Roles</Links>
+              <Nav.Link href="/Users">Users</Nav.Link>
+              <Nav.Link href="/Position">Position</Nav.Link>
+              <Nav.Link href="/Offices">Offices</Nav.Link>
+              <Nav.Link href="/Metric">Metric</Nav.Link>
+              <Nav.Link href="/Roles">Roles</Nav.Link>
             </>
           )}
-        </ul>
+        </Nav>
       </div>
     </div>
   );
