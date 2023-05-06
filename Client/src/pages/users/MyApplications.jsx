@@ -64,6 +64,7 @@ export const MyApplications = () => {
   // }, []);
   return (
     <Container>
+      <h1>My Applications</h1>
       <br />
       {/* {loading && (
         <Spinner animation="border" role="status" variant="primary">

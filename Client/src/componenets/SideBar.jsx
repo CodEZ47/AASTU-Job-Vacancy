@@ -1,13 +1,29 @@
-import React from "react";
-import { Links } from "./Links";
+import React, { useState } from "react";
+import { Nav } from "react-bootstrap";
 import { useAtom } from "jotai";
 import { authAtom } from "../atoms/authAtom";
+import styles from "../styles/sidebar.module.css";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 
 export const SideBar = () => {
   const [auth, setAuth] = useAtom(authAtom);
+  const [isOpen, setIsOpen] = useState(true);
+
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <div className="wrapper">
-      <div className="sidebar">
+    <div
+      className={`${styles.wrapper} ${isOpen ? styles.open : styles.closed}`}
+    >
+      <button
+        className={`${styles.toggle} ${isOpen ? styles.open : styles.closed}`}
+        onClick={handleToggle}
+      >
+        {isOpen ? <IoIosArrowBack /> : <IoIosArrowForward />}
+      </button>
+      <div className={styles.sidebar}>
         <ul>
           {
             auth.role === "APPLICANT" &&

@@ -1,0 +1,9 @@
+.searchBar {
+  position: sticky;
+  width: 80%;
+  /* float: right; */
+  /* left: 0; */
+  z-index: 0;
+  background-color: #fff;
+  box-shadow: 0px 1px 5px rgba(0, 0, 0, 0.1);
+}
