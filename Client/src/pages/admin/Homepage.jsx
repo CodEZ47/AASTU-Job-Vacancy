@@ -28,6 +28,7 @@ export const Homepage = () => {
     <div className={styles.container}>
       <Header />
       <Container fluid>
+        <Row>{auth.isAuthenticated && <SearchBar />}</Row>
         <Row className={styles.row}>
           {auth.isAuthenticated && (
             <Col xs={12} md={3} className={styles.sidebar}>
@@ -36,7 +37,6 @@ export const Homepage = () => {
           )}
           <Col xs={12} md={auth.isAuthenticated ? 9 : 12}>
             <div className={styles.content}>
-              {/* {auth.isAuthenticated && <SearchBar />} */}
               <Routes>
                 <Route path="/" element={<RedirectUser />} />
                 <Route path="/signin" element={<SignIn />} />
