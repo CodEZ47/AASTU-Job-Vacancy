@@ -4,21 +4,69 @@ import { Form, Button } from 'react-bootstrap';
 
 import { postVacancyValidation } from '../schemas/postVacancyValidation';
 import CustomSelect from "./custom_inputs/CustomSelect";
+import { BASE_URL } from '../constant';
+import { ToastContainer, toast } from 'react-toastify';
 
-export const PostVacancyForm = ({ positionsArray }) => {
+export const PostVacancyForm = () => {
+  const [positions, setPositions] = React.useState([]);
+  const fetchPositions = async () => {
+    try{
+      const response = await fetch(`${BASE_URL}/positions`);
+      const data = await response.json();
+      let positionsArray = [];
+      positionsArray.push({ value: "", label: "--Select Job Position--" })
+      data.forEach(position => {
+        positionsArray.push({
+          value: position.id,
+          label: position.name
+        });
+      });
+      setPositions(positionsArray);
+      console.log(positionsArray);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  const handleSubmit = async (values, { resetForm}) => {
+    try {
+      const data = {
+        name: values.title,
+        positionId: values.position,
+        description: values.description,
+      };
+      const response = await fetch(`${BASE_URL}/vacancies`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+      if(!response.ok) throw new Error('Something went wrong');
+      toast.success("Vacancy added successfully");
+      const vacancy = await response.json();
+      // reset form
+      resetForm();
+    } catch (e) {
+      // fire toast
+      console.log(e);
+      toast.error("Something went wrong");
+    }
+  };
+  React.useEffect(() => {
+    fetchPositions();
+  }, []);
   return (
     <div>
+      <ToastContainer/>
         <br />
         <h2>Add Vacancy</h2>
       <Formik
         initialValues={{
           title: '',
-          position: 'select position',
+          position: '',
           description: '',
         }}
-        onSubmit={function(values) {
-          alert(`Title: ${values.title}. Position: ${values.position}. Description: ${values.description}`);
-        }}
+        onSubmit={handleSubmit}
         validationSchema={postVacancyValidation}
       >
         {formik => (
@@ -45,8 +93,7 @@ export const PostVacancyForm = ({ positionsArray }) => {
             <CustomSelect
                     label="Position *"
                     name="position"
-                    placeholder="--Select Academic Rank--"
-                    options={positionsArray}
+                    options={positions}
                   />
 
             <Form.Group controlId="formDescription">
@@ -67,7 +114,9 @@ export const PostVacancyForm = ({ positionsArray }) => {
             </Form.Group>
 
             <br />
-            <Button type="submit">Add Vacancy</Button>
+            <Button type="submit" disabled={formik.isSubmitting}>
+              {formik.isSubmitting ? 'Loading...' : 'Add Vacancy'}
+            </Button>
           </Form>
         )}
       </Formik>

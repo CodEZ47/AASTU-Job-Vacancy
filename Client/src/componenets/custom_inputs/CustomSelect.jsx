@@ -12,6 +12,7 @@ const CustomSelect = ({ label, options, ...props }) => {
         {...field}
         {...props}
         isInvalid={meta.touched && meta.error}
+        
       >
         {options.map((option) => (
           <option key={option.value} value={option.value}>
