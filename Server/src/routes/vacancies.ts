@@ -1,10 +1,10 @@
-import { Router } from "express";
+import { Request, Response, Router } from "express";
 import prisma from "../lib/prisma";
 import { z } from "zod";
 import authenticate from "../middlewares/authenticate";
 import { Application } from "@prisma/client";
 const router = Router();
-router.get("/", authenticate,async (req, res) => {
+router.get("/", authenticate, async (req: Request, res:Response) => {
   // filter vacancy not older than 15 days if the vacancy is extended if the vacancy is not extended filter vacancy not older than 10 days
   try {
     const vacancies = await prisma.vacancy.findMany({
@@ -61,7 +61,9 @@ router.get("/", authenticate,async (req, res) => {
       });
       // map applied false or true
       const filteredVacancies = vacancies.map((vacancy) => {
-        const application = applications.find( (application) => application.vacancyId === vacancy.id);
+        const application = applications.find(
+          (application) => application.vacancyId === vacancy.id
+        );
         if (application) {
           return {
             ...vacancy,
@@ -76,7 +78,7 @@ router.get("/", authenticate,async (req, res) => {
       res.json(filteredVacancies);
       return;
     }
-    res.json(vacancies);
+    res.status(200).json(vacancies);
   } catch (e) {
     console.log(e);
     res.status(400).json({
@@ -93,8 +95,21 @@ router.get("/:id", async (req, res) => {
   });
   res.json(position);
 });
-router.post("/", async (req, res) => {
+router.post("/",authenticate, async (req, res) => {
   try {
+    // get user from db
+    const user = await prisma.user.findUnique({
+      where: {
+        id: req.userId,
+      },
+    });
+    // check if user is an office
+    if (user?.role !== "OFFICE" && user?.role !== "ADMIN") {
+      res.status(401).json({
+        message: "You are not authorized to create a vacancy",
+      });
+      return;
+    }
     const { name, description, positionId } = req.body;
     const FormData = z.object({
       name: z.string(),
@@ -102,7 +117,7 @@ router.post("/", async (req, res) => {
       positionId: z.string(),
     });
     const data = FormData.parse(req.body);
-    const position = await prisma.position.create({
+    const vacancy = await prisma.vacancy.create({
       data: {
         name: name,
         description: description,
@@ -110,7 +125,7 @@ router.post("/", async (req, res) => {
         extended: false,
       },
     });
-    res.json(position);
+    res.json(vacancy);
   } catch (e) {
     console.log(e);
     res.status(400).json(e);
@@ -125,7 +140,7 @@ router.put("/:id", async (req, res) => {
       description: z.string(),
       extended: z.boolean(),
     });
-    const position = await prisma.position.update({
+    const position = await prisma.vacancy.update({
       where: {
         id: id,
       },
@@ -153,7 +168,7 @@ router.delete("/:id", async (req, res) => {
 router.post("/extend/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const position = await prisma.position.update({
+    const position = await prisma.vacancy.update({
       where: {
         id: id,
       },
@@ -214,7 +229,7 @@ router.post("/:id/applications", authenticate, async (req, res) => {
     });
     res.json(application);
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res.status(400).json(err);
   }
 });
@@ -230,5 +245,16 @@ router.get("/:id/applications", authenticate, async (req, res) => {
   });
   res.json(applications);
 });
-
+router.get("/:id/applications/:appId", authenticate, async (req, res) => {
+  const { id, appId } = req.params;
+  const application = await prisma.application.findUnique({
+    where: {
+      id: appId,
+    },
+    include: {
+      user: true,
+    },
+  });
+  res.json(application);
+});
 export default router;

@@ -1,11 +1,16 @@
 import prisma from "../lib/prisma";
 import express from "express";
+import authenticate from "../middlewares/authenticate";
 import { z } from "zod";
 const router = express.Router();
 
 router.get("/", async (req, res) => {
-  const positions = await prisma.position.findMany();
-  res.json(positions);
+  try{
+    const positions = await prisma.position.findMany();
+    res.status(200).json(positions);
+  } catch(e) {
+    res.status(400).json(e);
+  }
 });
 router.get("/:id", async (req, res) => {
   const { id } = req.params;
@@ -16,7 +21,7 @@ router.get("/:id", async (req, res) => {
   });
   res.json(position);
 });
-router.post("/", async (req, res) => {
+router.post("/", authenticate, async (req, res) => {
   try {
     const { name, description, level } = req.body;
     const FormData = z.object({

@@ -24,8 +24,8 @@ const validationSchema = Yup.object().shape({
 
 const LoginForm = () => {
   const [auth, setAuth] = useAtom(authAtom);
-  const handleSubmit = (values, { setSubmitting, setStatus }) => {
-    onSubmit(values, setStatus);
+  const handleSubmit = async (values, { setSubmitting, setStatus }) => {
+    await onSubmit(values, setStatus);
     setSubmitting(false);
   };
   const navigate = useNavigate();

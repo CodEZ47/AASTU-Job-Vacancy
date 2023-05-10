@@ -24,23 +24,31 @@ export const SideBar = () => {
         {isOpen ? <IoIosArrowBack /> : <IoIosArrowForward />}
       </button>
       <div className={styles.sidebar}>
-        <Nav defaultActiveKey="/OpenVacancies" className="flex-column">
-          {auth.role === "APPLICANT" ? (
+        <ul>
+          {
+            auth.role === "APPLICANT" &&
             <>
-              <Nav.Link href="/OpenVacancies">Open Vacancies</Nav.Link>
-              <Nav.Link href="/MyApplications">My Applications</Nav.Link>
-              <Nav.Link href="/PostVacancy">Post Vacancy</Nav.Link>
-            </>
-          ) : (
-            <>
-              <Nav.Link href="/Users">Users</Nav.Link>
-              <Nav.Link href="/Position">Position</Nav.Link>
-              <Nav.Link href="/Offices">Offices</Nav.Link>
-              <Nav.Link href="/Metric">Metric</Nav.Link>
-              <Nav.Link href="/Roles">Roles</Nav.Link>
-            </>
-          )}
-        </Nav>
+              <Links link="/OpenVacancies">Open Vacancies</Links>
+              </>
+          }
+           {auth.role === "ADMIN" && (
+              <>
+              <Links link="/PostVacancy">Post Vacancy</Links>
+              <Links link="/Users">Users</Links>
+              <Links link="/Position">Position</Links>
+              <Links link="/Offices">Offices</Links>
+              <Links link="/Metric">Metric</Links>
+              <Links link="/Roles">Roles</Links>
+              </>)
+          }   
+          {
+            auth.role === "OFFICE" && (
+              <>
+              <Links link="/PostVacancy">Post Vacancy</Links>
+              </>
+            ) 
+          }
+        </ul>
       </div>
     </div>
   );
