@@ -19,10 +19,9 @@ import IsAuth from "../../hooks/useAuth";
 import { authAtom, useIsAuthenticated } from "../../atoms/authAtom";
 import { useAtom } from "jotai";
 import RedirectUser from "../../hooks/RedirectUser";
-import {PostVacancyForm} from "../../componenets/PostVacancyForm";
+import { PostVacancyForm } from "../../componenets/PostVacancyForm";
 
 import styles from "../../styles/homePage.module.css";
-
 
 export const Homepage = () => {
   const [auth, setAuth] = useAtom(authAtom);
@@ -41,26 +40,41 @@ export const Homepage = () => {
           <Col xs={12} md={auth.isAuthenticated ? 9 : 12}>
             <div className={styles.content}>
               <Routes>
-          <Route path="/" element={<RedirectUser />}></Route>
-          <Route path="/signin" element={<SignIn />} />
-          <Route path="/signup" element={<ApplicantSignUp />} />
-          <Route path="/Users" element={<Users />} />
-          <Route path="/Position" element={<Positions />} />
-          <Route path="/Offices" element={<Offices />} />
-          <Route path="/Metric" element={<Metric />} />
-          <Route path="/Roles" element={<Roles />} />
-          <Route path="/OpenVacancies" element={<IsAuth role={["APPLICANT"]}>
-            <OpenVacancies />
-          </IsAuth>} />
+                <Route path="/" element={<RedirectUser />}></Route>
+                <Route path="/signin" element={<SignIn />} />
+                <Route path="/signup" element={<ApplicantSignUp />} />
+                <Route path="/Users" element={<Users />} />
+                <Route path="/Position" element={<Positions />} />
+                <Route path="/Offices" element={<Offices />} />
+                <Route path="/Metric" element={<Metric />} />
+                <Route path="/Roles" element={<Roles />} />
+                <Route
+                  path="/OpenVacancies"
+                  element={
+                    <IsAuth role={["APPLICANT"]}>
+                      <OpenVacancies />
+                    </IsAuth>
+                  }
+                />
 
-          <Route path="/PostVacancy" element={<IsAuth role={["ADMIN", "OFFICE"]}>
-            <PostVacancyForm/>
-          </IsAuth>} />
-          
-          <Route path="/MyApplications" element={<IsAuth role={["ADMIN", "OFFICE"]}>
-            <MyApplications/>
-          </IsAuth>} />
-        </Routes>
+                <Route
+                  path="/PostVacancy"
+                  element={
+                    <IsAuth role={["ADMIN", "OFFICE"]}>
+                      <PostVacancyForm />
+                    </IsAuth>
+                  }
+                />
+
+                <Route
+                  path="/MyApplications"
+                  element={
+                    <IsAuth role={["APPLICANT"]}>
+                      <MyApplications />
+                    </IsAuth>
+                  }
+                />
+              </Routes>
             </div>
           </Col>
         </Row>
