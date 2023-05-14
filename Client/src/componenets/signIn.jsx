@@ -6,8 +6,11 @@ import { useNavigate } from "react-router-dom";
 import { useAtom } from "jotai";
 import { authAtom } from "../atoms/authAtom";
 import { Link } from "react-router-dom";
-
+import { login } from "../apis/user.api";
 import styles from "../styles/loginForm.module.css";
+import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { useState } from "react";
 
 const validationSchema = Yup.object().shape({
   email: Yup.string()
@@ -24,6 +27,27 @@ const validationSchema = Yup.object().shape({
 
 const LoginForm = () => {
   const [auth, setAuth] = useAtom(authAtom);
+  const [status, setStatus] = useState();
+  const logIn = useMutation({
+    mutationFn: (user)=> login(user.email, user.password),
+    onSuccess: (data) => {
+      if(data.token){
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("role", data.role);
+        setAuth({
+          token: data.token,
+          role: data.role,
+          isAuthenticated: true,
+        });
+        if (data.role == "APPLICANT") navigate("/OpenVacancies");
+      } else {
+        setStatus("Invalid email or password");
+      }
+    },
+    onError: (error) => {
+      setStatus("Something went wrong");
+    }
+  })
   const handleSubmit = async (values, { setSubmitting, setStatus }) => {
     await onSubmit(values, setStatus);
     setSubmitting(false);
@@ -35,33 +59,7 @@ const LoginForm = () => {
       email,
       password,
     };
-    try {
-      const auth = await fetch(`${BASE_URL}/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
-      const response = await auth.json();
-      if (response.token) {
-        localStorage.setItem("token", response.token);
-        localStorage.setItem("role", response.role);
-        setAuth({
-          token: response.token,
-          role: response.role,
-          isAuthenticated: true,
-        });
-        if (response.role == "APPLICANT") navigate("/OpenVacancies");
-      } else {
-        setStatus("Invalid email or password");
-      }
-    } catch (err) {
-      setStatus(err.message);
-      console.error(err.message);
-    } finally {
-      console.log(""); //for getting rid of empty block statement error in esLint
-    }
+    logIn.mutate(user);
   };
   return (
     <div
@@ -85,7 +83,6 @@ const LoginForm = () => {
               handleBlur,
               handleSubmit,
               isSubmitting,
-              status,
             }) => (
               <Form onSubmit={handleSubmit}>
                 {status && <div className="alert alert-danger">{status}</div>}
@@ -119,7 +116,10 @@ const LoginForm = () => {
                 </Form.Group>
 
                 <Button type="submit" className="mt-3" disabled={isSubmitting}>
-                  {isSubmitting ? "Loading..." : "Sign in"}
+                  {!logIn.isLoading && "Sign in"}
+                  {logIn.isLoading && (
+                    <span className="spinner-border spinner-border-sm ml-5"></span>
+                  )}
                 </Button>
               </Form>
             )}

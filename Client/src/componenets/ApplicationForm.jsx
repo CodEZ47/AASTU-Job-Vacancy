@@ -11,6 +11,8 @@ import ProgressModal from "./modals/ProgresModal";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useMutation } from "@tanstack/react-query";
+import { applyVacancy } from "../apis/vacancy.api";
 // import "../../styles/app.module.css";
 
 export const ApplicationForm = ({
@@ -21,6 +23,18 @@ export const ApplicationForm = ({
 }) => {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
+  const apply = useMutation({
+    mutationFn: async (variable) => await applyVacancy(variable.id, variable.data),
+    onSuccess: (data) => {
+      setShow(false);
+      toast.success("Applied successfully");
+      navigate("/myapplications");
+    },
+    onError: (error) => {
+      setShow(false);
+      toast.error("Something went wrong");
+    }
+  });
   const [typeOf, setTypeOf] = useState("");
   const onSubmit = async (values, actions) => {
     const {
@@ -32,15 +46,14 @@ export const ApplicationForm = ({
       no_projects,
       no_publications,
     } = values;
-
     let d = {
       workExperience: parseInt(workExperience),
       academicRank,
       teachingExperience: parseInt(teachingExperience),
       researchExperience,
       KPI,
-      no_projects: parseInt(no_projects),
-      no_publications: parseInt(no_publications),
+      no_projects: no_projects ? parseInt(no_projects) : 0,
+      no_publications: no_publications ? parseInt(no_publications): 0,
       vacancyId: vacancy.id,
     };
     const documents = [
@@ -70,8 +83,6 @@ export const ApplicationForm = ({
       },
     ];
     const res = await handleUpload(documents);
-    //returned promise allSettle
-
     let docs = {};
     let allSettled = res.map((r, i) => {
       if (r.status === "fulfilled") {
@@ -81,32 +92,15 @@ export const ApplicationForm = ({
         return;
       }
     });
-
     let data = {
       data: d,
       documents: docs,
     };
-    const application = await fetch(
-      `${BASE_URL}/vacancies/${vacancy.id}/applications`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify(data),
-      }
-    );
-    if (application.status === 200) {
-      setShow(false);
-      toast.success("Application submitted successfully");
-      setApplicationForm(false);
-      setShowOpenVacancies(true);
-    } else {
-      setShow(false);
-      toast.error("Error submitting application");
-    }
-    const response = await application.json();
+    console.log(data, "Application Form");
+    apply.mutate({
+      id: vacancy.id,
+      data
+    });
   };
   console.log(vacancy, dataTypeInfo);
   return (

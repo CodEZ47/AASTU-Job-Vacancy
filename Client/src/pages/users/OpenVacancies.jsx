@@ -1,52 +1,29 @@
 import List from "../../componenets/List";
-import { useState, useEffect } from "react";
-import { BASE_URL } from "../../constant";
 import { Container, Spinner } from "react-bootstrap";
-
+import { useQuery } from "@tanstack/react-query";
+import { getVacancies } from "../../apis/vacancy.api";
 const displayedData = [["title", "description", "requirement"], 4]; //data to be displayed for this specific list and the data type passed together
 export const OpenVacancies = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const fetchData = async () => {
-    //fetch data from the server
-   try {
-      const res = await fetch(`${BASE_URL}/vacancies`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`
-        },
-      });
-      if(!res.ok) throw Error("Could not fetch the data for that resource");
-      const json = await res.json();
-      let d = json.map((vacancy) => {
-        return {
-          id: vacancy.id,
-          title: vacancy.name,
-          description: vacancy.description,
-          requirement: vacancy.position.requirement,
-          applied: vacancy.applied,
-        }
-      });
-      setData(d);
-      setLoading(false);
-   } catch(e){
-      setError(e);
-   }
-  }
-  useEffect(() => {
-    fetchData();
-  }, []);
+  const {data,isLoading, error, refetch} = useQuery({
+    queryKey: ["openVacancies"],
+    queryFn: getVacancies,
+  })
   return (
     <Container>
       <h1>Vacancies</h1>
-      {loading && 
+      {isLoading && 
       <Spinner animation="border" role="status" variant="primary">
         <span className="visually-hidden">Loading...</span>
       </Spinner>
       }
-      <List elems={data} dataHeads={displayedData} />
+      {data &&<List elems={data} dataHeads={displayedData} />}
+      { /** if there is error show something happen and make a button to refetch**/ }
+      {error && 
+        <div>
+          <h1>Something went wrong</h1>
+          <button onClick={() => refetch()} className="btn btn-warning">Try again</button>
+        </div>
+      }
     </Container>
   );
 };
