@@ -1,4 +1,4 @@
-import List from "../../componenets/List";
+import List from "../../componenets/List.jsx";
 import { useState, useEffect } from "react";
 import { BASE_URL } from "../../constant";
 import { Container, Spinner } from "react-bootstrap";
@@ -10,15 +10,15 @@ export const OpenVacancies = () => {
   const [error, setError] = useState(null);
   const fetchData = async () => {
     //fetch data from the server
-   try {
+    try {
       const res = await fetch(`${BASE_URL}/vacancies`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
       });
-      if(!res.ok) throw Error("Could not fetch the data for that resource");
+      if (!res.ok) throw Error("Could not fetch the data for that resource");
       const json = await res.json();
       let d = json.map((vacancy) => {
         return {
@@ -27,25 +27,25 @@ export const OpenVacancies = () => {
           description: vacancy.description,
           requirement: vacancy.position.requirement,
           applied: vacancy.applied,
-        }
+        };
       });
       setData(d);
       setLoading(false);
-   } catch(e){
+    } catch (e) {
       setError(e);
-   }
-  }
+    }
+  };
   useEffect(() => {
     fetchData();
   }, []);
   return (
     <Container>
       <h1>Vacancies</h1>
-      {loading && 
-      <Spinner animation="border" role="status" variant="primary">
-        <span className="visually-hidden">Loading...</span>
-      </Spinner>
-      }
+      {loading && (
+        <Spinner animation="border" role="status" variant="primary">
+          <span className="visually-hidden">Loading...</span>
+        </Spinner>
+      )}
       <List elems={data} dataHeads={displayedData} />
     </Container>
   );

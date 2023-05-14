@@ -5,6 +5,7 @@ import { authAtom } from "../atoms/authAtom";
 import { Links } from "./Links";
 import styles from "../styles/sidebar.module.css";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { Links } from "./Links.jsx";
 
 export const SideBar = () => {
   const [auth, setAuth] = useAtom(authAtom);

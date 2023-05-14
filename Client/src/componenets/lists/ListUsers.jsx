@@ -7,7 +7,7 @@ import {
   Dropdown,
 } from "react-bootstrap";
 
-import EditModal from "../EditUser";
+import EditModal from "../EditUser.jsx";
 
 const ListUsers = ({ users, dataTypeInfo }) => {
   const [editingUser, setEditingUser] = useState(null);

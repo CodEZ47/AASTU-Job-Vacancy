@@ -1,8 +1,8 @@
 import { useField } from "formik";
 import { Form } from "react-bootstrap";
-import CustomSelect from "./CustomSelect";
+import CustomSelect from "./CustomSelect.jsx";
 
-const CustomConditionalInput = ({ label, options, setTypeOf,...props}) => {
+const CustomConditionalInput = ({ label, options, setTypeOf, ...props }) => {
   const [field, meta] = useField(props);
   const inp = field.value;
   setTypeOf(inp);

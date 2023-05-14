@@ -1,7 +1,7 @@
 import { atom, useAtom } from "jotai";
 import { useEffect } from "react";
 // import { useHistory } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth.jsx";
 const role = localStorage.getItem("role");
 const token = localStorage.getItem("token");
 export const authAtom = atom({

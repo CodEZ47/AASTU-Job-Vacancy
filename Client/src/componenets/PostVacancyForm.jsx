@@ -1,24 +1,24 @@
-import React from 'react';
-import { Formik } from 'formik';
-import { Form, Button } from 'react-bootstrap';
+import React from "react";
+import { Formik } from "formik";
+import { Form, Button } from "react-bootstrap";
 
-import { postVacancyValidation } from '../schemas/postVacancyValidation';
-import CustomSelect from "./custom_inputs/CustomSelect";
-import { BASE_URL } from '../constant';
-import { ToastContainer, toast } from 'react-toastify';
+import { postVacancyValidation } from "../schemas/postVacancyValidation";
+import CustomSelect from "./custom_inputs/CustomSelect.jsx";
+import { BASE_URL } from "../constant";
+import { ToastContainer, toast } from "react-toastify";
 
 export const PostVacancyForm = () => {
   const [positions, setPositions] = React.useState([]);
   const fetchPositions = async () => {
-    try{
+    try {
       const response = await fetch(`${BASE_URL}/positions`);
       const data = await response.json();
       let positionsArray = [];
-      positionsArray.push({ value: "", label: "--Select Job Position--" })
-      data.forEach(position => {
+      positionsArray.push({ value: "", label: "--Select Job Position--" });
+      data.forEach((position) => {
         positionsArray.push({
           value: position.id,
-          label: position.name
+          label: position.name,
         });
       });
       setPositions(positionsArray);
@@ -27,7 +27,7 @@ export const PostVacancyForm = () => {
       console.log(e);
     }
   };
-  const handleSubmit = async (values, { resetForm}) => {
+  const handleSubmit = async (values, { resetForm }) => {
     try {
       const data = {
         name: values.title,
@@ -35,13 +35,13 @@ export const PostVacancyForm = () => {
         description: values.description,
       };
       const response = await fetch(`${BASE_URL}/vacancies`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
-      if(!response.ok) throw new Error('Something went wrong');
+      if (!response.ok) throw new Error("Something went wrong");
       toast.success("Vacancy added successfully");
       const vacancy = await response.json();
       // reset form
@@ -57,21 +57,20 @@ export const PostVacancyForm = () => {
   }, []);
   return (
     <div>
-      <ToastContainer/>
-        <br />
-        <h2>Add Vacancy</h2>
+      <ToastContainer />
+      <br />
+      <h2>Add Vacancy</h2>
       <Formik
         initialValues={{
-          title: '',
-          position: '',
-          description: '',
+          title: "",
+          position: "",
+          description: "",
         }}
         onSubmit={handleSubmit}
         validationSchema={postVacancyValidation}
       >
-        {formik => (
+        {(formik) => (
           <Form onSubmit={formik.handleSubmit} className="my-3 p-3 shadow">
-
             <Form.Group controlId="title">
               <Form.Label>Title *</Form.Label>
               <Form.Control
@@ -89,12 +88,11 @@ export const PostVacancyForm = () => {
               )}
             </Form.Group>
 
-
             <CustomSelect
-                    label="Position *"
-                    name="position"
-                    options={positions}
-                  />
+              label="Position *"
+              name="position"
+              options={positions}
+            />
 
             <Form.Group controlId="formDescription">
               <Form.Label>Description *</Form.Label>
@@ -104,7 +102,9 @@ export const PostVacancyForm = () => {
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 value={formik.values.description}
-                isInvalid={formik.touched.description && formik.errors.description}
+                isInvalid={
+                  formik.touched.description && formik.errors.description
+                }
               />
               {formik.touched.description && formik.errors.description && (
                 <Form.Control.Feedback type="invalid">
@@ -115,14 +115,14 @@ export const PostVacancyForm = () => {
 
             <br />
             <Button type="submit" disabled={formik.isSubmitting}>
-              {formik.isSubmitting ? 'Loading...' : 'Add Vacancy'}
+              {formik.isSubmitting ? "Loading..." : "Add Vacancy"}
             </Button>
           </Form>
         )}
       </Formik>
     </div>
-  )
-}
+  );
+};
 
 // positions = []
 // Position Created Using <PostVacancy positionsArray={positions} />

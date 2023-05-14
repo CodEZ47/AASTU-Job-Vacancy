@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { BASE_URL } from "../../constant";
-import List from "../../componenets/List";
+import List from "../../componenets/List.jsx";
 import { Container, Spinner } from "react-bootstrap";
 
 const data = [

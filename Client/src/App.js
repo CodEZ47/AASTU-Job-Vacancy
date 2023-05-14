@@ -1,4 +1,4 @@
-import { Homepage } from "./pages/admin/Homepage";
+import { Homepage } from "./pages/admin/Homepage.jsx";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
