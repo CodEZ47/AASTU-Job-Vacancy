@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Nav } from "react-bootstrap";
 import { useAtom } from "jotai";
 import { authAtom } from "../atoms/authAtom";
+import { Links } from "./Links";
 import styles from "../styles/sidebar.module.css";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { Links } from "./Links.jsx";
@@ -29,6 +30,7 @@ export const SideBar = () => {
           {auth.role === "APPLICANT" && (
             <>
               <Links link="/OpenVacancies">Open Vacancies</Links>
+              <Links link="/MyApplications">My Applications</Links>
             </>
           )}
           {auth.role === "ADMIN" && (

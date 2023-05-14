@@ -69,7 +69,7 @@ export const Homepage = () => {
                 <Route
                   path="/MyApplications"
                   element={
-                    <IsAuth role={["ADMIN", "OFFICE"]}>
+                    <IsAuth role={["APPLICANT"]}>
                       <MyApplications />
                     </IsAuth>
                   }
