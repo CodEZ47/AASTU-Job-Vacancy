@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { Nav } from "react-bootstrap";
 import { useAtom } from "jotai";
 import { authAtom } from "../atoms/authAtom";
-import { Links } from "./Links";
 import styles from "../styles/sidebar.module.css";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
-import { Links } from "./Links.jsx";
+import { PagesLinks } from "./PagesLinks.jsx";
 
 export const SideBar = () => {
   const [auth, setAuth] = useAtom(authAtom);
@@ -29,23 +28,23 @@ export const SideBar = () => {
         <ul>
           {auth.role === "APPLICANT" && (
             <>
-              <Links link="/OpenVacancies">Open Vacancies</Links>
-              <Links link="/MyApplications">My Applications</Links>
+              <PagesLinks link="/OpenVacancies">Open Vacancies</PagesLinks>
+              <PagesLinks link="/MyApplications">My Applications</PagesLinks>
             </>
           )}
           {auth.role === "ADMIN" && (
             <>
-              <Links link="/PostVacancy">Post Vacancy</Links>
-              <Links link="/Users">Users</Links>
-              <Links link="/Position">Position</Links>
-              <Links link="/Offices">Offices</Links>
-              <Links link="/Metric">Metric</Links>
-              <Links link="/Roles">Roles</Links>
+              <PagesLinks link="/PostVacancy">Post Vacancy</PagesLinks>
+              <PagesLinks link="/Users">Users</PagesLinks>
+              <PagesLinks link="/Position">Position</PagesLinks>
+              <PagesLinks link="/Offices">Offices</PagesLinks>
+              <PagesLinks link="/Metric">Metric</PagesLinks>
+              <PagesLinks link="/Roles">Roles</PagesLinks>
             </>
           )}
           {auth.role === "OFFICE" && (
             <>
-              <Links link="/PostVacancy">Post Vacancy</Links>
+              <PagesLinks link="/PostVacancy">Post Vacancy</PagesLinks>
             </>
           )}
         </ul>
