@@ -1,6 +1,6 @@
 import { Link, useMatch, useResolvedPath } from "react-router-dom";
 
-export const Links = ({ link, children, ...props }) => {
+export const PagesLinks = ({ link, children, ...props }) => {
   const path = useResolvedPath(link);
   const isActive = useMatch({ path: path.pathname, end: true });
   let active = "";
