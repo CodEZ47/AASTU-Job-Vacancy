@@ -1,7 +1,7 @@
 import { useState, React } from "react";
-import { RadioButton } from "../../componenets/RadioButton";
-import { TextArea } from "../../componenets/TextArea";
-import List from "../../componenets/List";
+import { RadioButton } from "../../componenets/RadioButton.jsx";
+import { TextArea } from "../../componenets/TextArea.jsx";
+import List from "../../componenets/List.jsx";
 
 import { Form } from "react-bootstrap";
 import { Button } from "react-bootstrap";

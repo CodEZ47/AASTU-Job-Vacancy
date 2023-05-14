@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ListGroup, ListGroupItem, Button } from "react-bootstrap";
-import { ComplaintModal } from "../modals/ComplaintModal";
+import { ComplaintModal } from "../modals/ComplaintModal.jsx";
 
 const ListUserApplications = ({ applications, dataTypeInfo }) => {
   const getStatusColor = (status) => {

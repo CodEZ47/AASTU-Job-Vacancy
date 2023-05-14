@@ -1,6 +1,6 @@
-import ListUserApplications from "./lists/ListUserApplications";
-import ListUsers from "./lists/ListUsers";
-import ListVacancies from "./lists/ListVacancies";
+import ListUserApplications from "./lists/ListUserApplications.jsx";
+import ListUsers from "./lists/ListUsers.jsx";
+import ListVacancies from "./lists/ListVacancies.jsx";
 
 const List = ({ elems, dataHeads }) => {
   const type = dataHeads[1]; //number that defines what type of data is being sent.[0 for users, 1 for positions, etc..]

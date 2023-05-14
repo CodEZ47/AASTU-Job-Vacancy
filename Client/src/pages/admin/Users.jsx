@@ -1,5 +1,5 @@
 import React from "react";
-import List from "../../componenets/List";
+import List from "../../componenets/List.jsx";
 
 const users = [
   { id: 1, name: "Test Testerson", email: "john@example.com" },

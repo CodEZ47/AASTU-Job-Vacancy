@@ -1,8 +1,8 @@
 // import { Route, Routes } from "react-router-dom";
 
-import { Header } from "../../componenets/Header";
-import { SearchBar } from "../../componenets/SearchBar";
-import { SideBar } from "../../componenets/SideBar";
+import { Header } from "../../componenets/Header.jsx";
+import { SearchBar } from "../../componenets/SearchBar.jsx";
+import { SideBar } from "../../componenets/SideBar.jsx";
 
 export const UserDashboard = () => {
   return (

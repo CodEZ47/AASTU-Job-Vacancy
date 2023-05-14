@@ -1,5 +1,4 @@
-import { PostVacancyForm } from "../../componenets/PostVacancyForm"
-
+import { PostVacancyForm } from "../../componenets/PostVacancyForm.jsx";
 
 export function PostVacancy() {
   const positions = [
@@ -14,10 +13,10 @@ export function PostVacancy() {
       label: "Associate Professor",
     },
     { value: "Professor", label: "Professor" },
-  ]
+  ];
   return (
     <>
       <PostVacancyForm positionsArray={positions} />
     </>
-  )
+  );
 }
