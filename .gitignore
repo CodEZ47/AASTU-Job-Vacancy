@@ -13,7 +13,7 @@
 /Server/build
 /Client/build
 /Server/dist
-/Client/dist
+# /Client/dist
 # misc
 .DS_Store
 .env.local
