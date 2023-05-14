@@ -28,7 +28,27 @@ export default function ApplicantSignUp() {
       .required("Phone number is required"),
     department: Yup.string().required("Department is required"),
   });
-
+  const [status, setStatus] = useState();
+  const register = useMutation({
+    mutationFn: (user) => register(user),
+    onSuccess: (data) => {
+      if (data.token) {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("role", data.role);
+        setAuth({
+          token: data.token,
+          role: data.role,
+          isAuthenticated: true,
+        });
+        navigate("/OpenVacancies");
+      } else {
+        setStatus("Invalid email or password");
+      }
+    },
+    onError: (error) => {
+      setStatus("Something went wrong");
+    },
+  });
   const handleSubmit = async (values, { setSubmitting, setStatus }) => {
     await onSubmit(values, setStatus);
     setSubmitting(false);
@@ -46,34 +66,7 @@ export default function ApplicantSignUp() {
       department,
       role: "APPLICANT",
     };
-    console.log(user);
-    try {
-      const auth = await fetch(`${BASE_URL}/auth/register`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
-      const response = await auth.json();
-      if (response.token) {
-        localStorage.setItem("token", response.token);
-        localStorage.setItem("role", response.role);
-        setAuth({
-          token: response.token,
-          role: response.role,
-          isAuthenticated: true,
-        });
-        navigate("/OpenVacancies");
-      } else {
-        setStatus(response.message);
-      }
-    } catch (err) {
-      setStatus(err.message);
-      console.error(err.message);
-    } finally {
-      console.log(""); //for getting rid of empty block statement error in esLint
-    }
+    register.mutate(user);
   };
   return (
     <div
@@ -104,7 +97,6 @@ export default function ApplicantSignUp() {
               handleBlur,
               handleSubmit,
               isSubmitting,
-              status,
             }) => (
               <Form noValidate onSubmit={handleSubmit}>
                 {status && <div className="alert alert-danger">{status}</div>}
