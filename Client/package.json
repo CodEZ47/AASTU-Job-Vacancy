@@ -21,9 +21,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "dev": "vite",
     "build": "rollup --config",
-    "preview": "vite preview",
     "format": "prettier --write \"src/**/*.{js, jsx}\"",
     "lint": "eslint \"src/**/*.{js,jsx}\" --quiet",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -31,7 +29,6 @@
   "devDependencies": {
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-image": "^3.0.2",
-    "@vitejs/plugin-react": "^2.1.0",
     "autoprefixer": "^10.4.14",
     "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.5.0",
@@ -41,8 +38,7 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "postcss": "^8.4.23",
     "prettier": "^2.7.1",
-    "rollup-plugin-postcss": "^4.0.2",
-    "vite": "^3.1.4"
+    "rollup-plugin-postcss": "^4.0.2"
   },
   "browserslist": {
     "production": [
